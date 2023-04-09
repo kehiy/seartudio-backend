@@ -5,8 +5,6 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import rateLimit from 'express-rate-limit';
-import swaggerJsDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
 //
 import { NODE_ENV, PORT, ORIGIN, CREDENTIALS } from './config';
 import DB from './databases';
@@ -75,22 +73,7 @@ class App {
   private initializeSwagger() {
     console.log('cwd', process.cwd());
 
-    const swaggerDefinition = {
-      openapi: '3.0.0',
-      info: {
-        title: 'API docs',
-        version: '1.1.0',
-        description: '',
-      },
-    };
-
-    const swaggerOptions = {
-      swaggerDefinition,
-      apis: ['./src/*/*'],
-    };
-
-    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerJsDoc(swaggerOptions), { explorer: true }));
-  }
+  };
 }
 
 export default App;

@@ -5,6 +5,7 @@ import Client from '../models/client';
 const sequelize = new Sequelize.Sequelize(DB_NAME, DB_USER, DB_PASS, {
   dialect: 'postgres',
   host: DB_HOST,
+  port: 33570,
   pool: {
     min: 0,
     max: 5,
