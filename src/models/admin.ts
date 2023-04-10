@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
-export class Client extends Model {
+export class Admin extends Model {
     id: string;
     role: string;
     email: string;
@@ -9,8 +9,8 @@ export class Client extends Model {
     updatedAt: Date;
 }
 
-export default function (sequelize: Sequelize): typeof Client {
-    Client.init(
+export default function (sequelize: Sequelize): typeof Admin {
+    Admin.init(
         {
             role: {
                 type: DataTypes.STRING,
@@ -29,5 +29,5 @@ export default function (sequelize: Sequelize): typeof Client {
         { sequelize }
     );
 
-    return Client;
+    return Admin;
 }
