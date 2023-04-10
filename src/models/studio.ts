@@ -20,6 +20,7 @@ export class Studio extends Model {
     expireDate: Date;
     description: string;
     passWord: string;
+    role: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -128,6 +129,11 @@ export default function (sequelize: Sequelize): typeof Studio {
             description: {
                 type: DataTypes.STRING,
                 allowNull: false,
+            },
+            role: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: "studio",
             },
             passWord: {
                 type: DataTypes.STRING,
