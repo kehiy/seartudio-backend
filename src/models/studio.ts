@@ -29,7 +29,7 @@ export default function (sequelize: Sequelize): typeof Studio {
     Studio.init(
         {
             studioId: {
-                type: DataTypes.NUMBER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             name: {
@@ -37,7 +37,7 @@ export default function (sequelize: Sequelize): typeof Studio {
                 allowNull: false,
             },
             phoneNumber: {
-                type: DataTypes.NUMBER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             address: {
@@ -87,7 +87,7 @@ export default function (sequelize: Sequelize): typeof Studio {
                 values: ["خانگی", "حرفه ای"],
             },
             pricePerHour: {
-                type: DataTypes.NUMBER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             openingHours: {
