@@ -10,7 +10,7 @@ import { NODE_ENV, PORT, ORIGIN, CREDENTIALS } from './config';
 import DB from './databases';
 import errorMiddleware from './middlewares/error';
 import { authenticated } from './middlewares/auth';
-import clients from './routes/clients';
+import newsLetter from './routes/newsLetter';
 
 class App {
   public app: express.Application;
@@ -63,11 +63,11 @@ class App {
   }
 
   private initializeRoutes() {
-    this.app.get('/test', (req, res) => {
-      res.end('Hi');
+    this.app.get('/status', (req, res) => {
+      res.status(707).end("nice~!");
     });
 
-    this.app.use('/clients', authenticated, clients);
+    this.app.use('/newsLetter', newsLetter);
   }
 
   private initializeSwagger() {
