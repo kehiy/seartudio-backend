@@ -8,6 +8,7 @@ export class Studio extends Model {
     address: string;
     province: string;
     type: string;
+    license:string;
     pricePerHour: number;
     openingHours: string;
     logo: string;
@@ -85,6 +86,11 @@ export default function (sequelize: Sequelize): typeof Studio {
                 type: DataTypes.STRING,
                 allowNull: false,
                 values: ["خانگی", "حرفه ای"],
+            },
+            license: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                values: ["دارد", "ندارد"],
             },
             pricePerHour: {
                 type: DataTypes.INTEGER,
