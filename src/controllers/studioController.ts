@@ -17,5 +17,5 @@ export const addStudio = async (req, res) => {
 
     const {logo,image} = req.file;
 
-
+    
 }
