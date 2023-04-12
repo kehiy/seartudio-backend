@@ -112,25 +112,29 @@ export default function (sequelize: Sequelize): typeof Studio {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            telegramId: {
+            stId: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
             isActive: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
+                defaultValue:false,
             },
             isPromoted: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
+                defaultValue:false,
             },
             isVeryfied: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
+                defaultValue:false,
             },
             expireDate: {
                 type: DataTypes.DATE,
                 allowNull: true,
+                defaultValue:null,
             },
             description: {
                 type: DataTypes.STRING,
