@@ -7,8 +7,8 @@ export default {
       code:'bad_request',
       text:'bad request'
     },
-    user_exist:{
-      code:'user_exist',
-      text:'user is exist'
+    studio_exist:{
+      code:'studio_exist',
+      text:'studio is exist'
     }
 };
