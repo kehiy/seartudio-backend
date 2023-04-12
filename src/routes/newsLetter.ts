@@ -5,7 +5,7 @@ import { handlerAsync } from 'utils/handler';
 const router = Router();
 
 
-router.post('/', handlerAsync(addNewsLetter));
+router.post('/', addNewsLetter);
 
 
 export default router;

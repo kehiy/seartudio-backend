@@ -24,7 +24,6 @@ class App {
 
     this.connectToDatabase();
     this.initializeMiddlewares();
-    this.initializeSwagger();
     this.initializeRoutes();
     this.app.use(errorMiddleware);
   }
@@ -69,11 +68,6 @@ class App {
 
     this.app.use('/newsLetter', newsLetter);
   }
-
-  private initializeSwagger() {
-    console.log('cwd', process.cwd());
-
-  };
 }
 
 export default App;
