@@ -12,9 +12,9 @@ export const addNewsLetter = async (req, res) => {
   if (!duplicate) {
     await Newsletter.create({ email });
 
-    return apiResponse(res, 201, messageEnum.created_201, { email });
+    return apiResponse(res, 201, messageEnum.created_201, { email,"msg":"ایمیل شما با موفقیت ثبت شد." });
 
   } else {
-    return apiResponse(res, 400, messageEnum.bad_request, { "msg": "duplicate email." });
+    return apiResponse(res, 400, messageEnum.bad_request, { "msg": "شما قبلا در خبرنامه ثبت نام کرده اید." });
   }
 };
