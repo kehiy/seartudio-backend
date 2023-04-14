@@ -96,10 +96,6 @@ export default function (sequelize: Sequelize): typeof Studio {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            openingHours: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
             logo: {
                 type: DataTypes.STRING,
                 allowNull: false,

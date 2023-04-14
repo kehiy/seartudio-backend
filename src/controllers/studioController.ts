@@ -29,7 +29,7 @@ export const addStudio = async (req, res) => {
     });
 
     if(isExist){
-        return apiResponse(res,409,messageEnum.user_exist,{
+        return apiResponse(res,409,messageEnum.studio_exist,{
             "msg":"studio already exist in DB."
         });
     }
