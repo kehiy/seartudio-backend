@@ -12,6 +12,8 @@ import errorMiddleware from './middlewares/error';
 import { authenticated } from './middlewares/auth';
 import newsLetter from './routes/newsLetter';
 import studio from './routes/studio';
+import fileUpload from 'express-fileupload';
+import bodyParser from 'body-parser';
 
 class App {
   public app: express.Application;
@@ -51,6 +53,9 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use(fileUpload());
+    this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app.use(bodyParser.json());
 
     const limiter = rateLimit({
       windowMs: 60000,

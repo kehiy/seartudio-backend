@@ -16,6 +16,7 @@ export const addStudio = async (req, res) => {
         address, province, type, license,
         pricePerHour, email, telegramId,
         description, passWord } = req.body;
+    console.log(name);
 
     const isExist = await Studio.findOne({
         where: {
@@ -27,9 +28,9 @@ export const addStudio = async (req, res) => {
         }
     });
 
-    if(isExist){
-        return apiResponse(res,409,messageEnum.studio_exist,{
-            "msg":"studio already exist in DB."
+    if (isExist) {
+        return apiResponse(res, 409, messageEnum.studio_exist, {
+            "msg": "studio already exist in DB."
         });
     }
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -37,41 +38,45 @@ export const addStudio = async (req, res) => {
     }
 
     if (req.files.image.mimetype === "image/jpeg" || req.files.image.mimetype === "image/png" || req.files.image.mimetype === "image/jpg") {
-        let file = req.files.image;
-        const Uid = v4()
-        const imageFileName = `${process.env.SERVER}/uploads/${Uid}-${file.name}`
-        const fileNameUpload = `${Uid}-${file.name}`
-        let uploadPath = `src/uploads/${fileNameUpload}`;
-
-        const image = await sharp(file.data)
-            .jpeg({ mozjpeg: true })
-            .toBuffer();
-        fs.writeFileSync(uploadPath, image);
-    }else {
+    } else {
         return apiResponse(res, 415, messageEnum.err_Unsupported_Media_Type, "");
     }
 
-    if(req.files.logo){
+    if (req.files.logo) {
         if (req.files.logo.mimetype === "image/jpeg" || req.files.logo.mimetype === "image/png" || req.files.logo.mimetype === "image/jpg") {
-            let file = req.files.logo;
-            const Uid = v4()
-            const logoFileName = `${process.env.SERVER}/uploads/${Uid}-${file.name}`
-            const fileNameUpload = `${Uid}-${file.name}`
-            let uploadPath = `src/uploads/${fileNameUpload}`;
-    
-            const image = await sharp(file.data)
-                .jpeg({ mozjpeg: true })
-                .toBuffer();
-            fs.writeFileSync(uploadPath, image);
-    }else {
-        return apiResponse(res, 415, messageEnum.err_Unsupported_Media_Type, "");
-    }
-
-    }else{
+        } else {
+            return apiResponse(res, 415, messageEnum.err_Unsupported_Media_Type, "");
+        }
+    } else {
         const logoFileName = `${process.env.SERVER}/uploads/def-logo.png`;
     }
 
-    const hashPassWord = await bcrypt.hash(passWord, process.env.SALT);
+    //! upload image
+    let file = req.files.image;
+    const Uid = v4()
+    const imageFileName = `${process.env.SERVER}/uploads/${Uid}-${file.name}`
+    const fileNameUpload = `${Uid}-${file.name}`
+    let uploadPath = `src/uploads/${fileNameUpload}`;
+
+    const image = await sharp(file.data)
+        .jpeg({ mozjpeg: true })
+        .toBuffer();
+    fs.writeFileSync(uploadPath, image);
+
+    //! upload logo
+    let logoFile = req.files.logo;
+    const logoUid = v4()
+    const logoFileName = `${process.env.SERVER}/uploads/${logoUid}-${logoFile.name}`
+    const logoNameUpload = `${logoUid}-${logoFile.name}`
+    let logoUploadPath = `src/uploads/${logoNameUpload}`;
+
+    const logo = await sharp(logoFile.data)
+        .jpeg({ mozjpeg: true })
+        .toBuffer();
+    fs.writeFileSync(logoUploadPath, logo);
+
+    const SALT = await bcrypt.genSalt(10);
+    const hashPassWord = await bcrypt.hash(passWord, SALT);
 
     const newStudio = await Studio.create({
         studioId,
@@ -85,8 +90,10 @@ export const addStudio = async (req, res) => {
         email,
         telegramId,
         description,
-        hashPassWord
+        passWord: hashPassWord,
+        logo: logoFileName,
+        image: imageFileName
     });
 
-    return apiResponse(res,201,messageEnum.created_201,{newStudio});
+    return apiResponse(res, 201, messageEnum.created_201, { newStudio });
 }
