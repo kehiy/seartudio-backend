@@ -5,15 +5,15 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import rateLimit from 'express-rate-limit';
+import fileUpload from 'express-fileupload';
+import bodyParser from 'body-parser';
 //
 import { NODE_ENV, PORT, ORIGIN, CREDENTIALS } from './config';
 import DB from './databases';
 import errorMiddleware from './middlewares/error';
-import { authenticated } from './middlewares/auth';
 import newsLetter from './routes/newsLetter';
 import studio from './routes/studio';
-import fileUpload from 'express-fileupload';
-import bodyParser from 'body-parser';
+import homePage from './routes/homePage';
 
 class App {
   public app: express.Application;
@@ -72,6 +72,7 @@ class App {
       res.status(707).end("nice~!");
     });
 
+    this.app.use('/', homePage);
     this.app.use('/newsLetter', newsLetter);
     this.app.use('/studio', studio);
     this.app.use('/uploads', express.static(__dirname + '/uploads'));
