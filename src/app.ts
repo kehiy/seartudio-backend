@@ -11,6 +11,7 @@ import DB from './databases';
 import errorMiddleware from './middlewares/error';
 import { authenticated } from './middlewares/auth';
 import newsLetter from './routes/newsLetter';
+import studio from './routes/studio';
 
 class App {
   public app: express.Application;
@@ -67,6 +68,7 @@ class App {
     });
 
     this.app.use('/newsLetter', newsLetter);
+    this.app.use('/studio', studio);
     this.app.use('/uploads', express.static(__dirname + '/uploads'));
     this.app.use('/', (req,res)=>{
       res.status(404).json({
