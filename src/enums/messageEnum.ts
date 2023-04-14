@@ -10,5 +10,9 @@ export default {
     studio_exist:{
       code:'studio_exist',
       text:'studio is exist'
+    },
+    err_Unsupported_Media_Type:{
+      code:"err_Unsupported_Media_Type",
+      text:"just png/jpg/jpeg media types supported."
     }
 };

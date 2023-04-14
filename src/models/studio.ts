@@ -108,10 +108,6 @@ export default function (sequelize: Sequelize): typeof Studio {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            stId: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
             isActive: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
@@ -140,6 +136,10 @@ export default function (sequelize: Sequelize): typeof Studio {
                 type: DataTypes.STRING,
                 allowNull: false,
                 defaultValue: "studio",
+            },
+            telegramId:{
+                type:DataTypes.INTEGER,
+                allowNull:false,
             },
             passWord: {
                 type: DataTypes.STRING,
