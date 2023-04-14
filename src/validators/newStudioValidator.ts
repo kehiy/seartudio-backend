@@ -82,6 +82,23 @@ export const studioValidate = () => {
   ];
 };
 
+export const loginValidate = () => {
+  return [
+    body('email')
+    .exists()
+    .withMessage('ایمیل نمی تواند خالی باشد')
+    .isString()
+    .isEmail()
+    .withMessage('لطفا یک ایمیل معتبر وارد کنید')
+    .bail(),
+    body('passWord')
+    .exists()
+    .withMessage('رمز عبور نمی تواند خالی باشد')
+    .isString()
+    .bail()
+  ];
+};
+
 export const studioValidateErr = (req, res, next)=>{
     const errors = validationResult(req)
     if (errors.isEmpty()) {

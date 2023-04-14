@@ -10,6 +10,7 @@ import { v4 } from "uuid";
 import Dto from "../dto/studioDto";
 
 const Studio = DB.Studio;
+const Admin = DB.Admin;
 
 export const addStudio = async (req, res) => {
     const { studioId, name, phoneNumber,
@@ -95,4 +96,44 @@ export const addStudio = async (req, res) => {
     });
 
     return apiResponse(res, 201, messageEnum.created_201, new Dto(newStudio));
+}
+
+
+export const studioLogin = async (req, res) => {
+    const { email, passWord } = req.body;
+
+    const studio = await Studio.findOne({
+        where: {
+            email
+        }
+    })
+
+    if (studio) {
+        const passwordMatch = await bcrypt.compare(passWord, studio.passWord);
+        if (passwordMatch) {
+            let studioData = new Dto(studio);
+            const token = jwt.sign(studioData, process.env.JWT_SECRET, { expiresIn: '24h' });
+            return apiResponse(res, 200, messageEnum.login_success, { "jwt": token, "studio": studioData });
+        } else {
+            return apiResponse(res, 401, messageEnum.login_faild, {});
+        }
+    } else {
+        const admin = await Admin.findOne({
+            where: {
+                email
+            }
+        });
+
+        if (admin) {
+            const passwordMatch = await bcrypt.compare(passWord, admin.passWord);
+            if (passwordMatch) {
+                const token = jwt.sign(admin, process.env.JWT_SECRET, { expiresIn: '24h' });
+                return apiResponse(res, 200, messageEnum.login_success, { "jwt": token, "admin": admin });
+            } else {
+                return apiResponse(res, 401, messageEnum.login_faild, {});
+            }
+        } else {
+            return apiResponse(res, 401, messageEnum.login_faild, {});
+        }
+    }
 }
