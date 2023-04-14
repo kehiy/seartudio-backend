@@ -1,4 +1,4 @@
-const provinces = [
+export const provinces = [
     "آذربایجان شرقی",
     "آذربایجان غربی",
     "اردبیل",
@@ -30,4 +30,7 @@ const provinces = [
     "هرمزگان",
     "همدان",
     "یزد"
-  ];
+];
+
+export const license = ["ندارد","دارد"]
+export const type = ["خانگی","حرفه ای"]
