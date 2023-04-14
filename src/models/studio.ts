@@ -97,6 +97,7 @@ export default function (sequelize: Sequelize): typeof Studio {
             },
             logo: {
                 type: DataTypes.STRING,
+                defaultValue:`${process.env.SERVER}/uploads/def-logo.png`,
                 allowNull: false,
             },
             image: {
