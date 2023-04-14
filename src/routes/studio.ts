@@ -6,7 +6,7 @@ const router = Router();
 
 
 router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
-router.post('/login', loginValidate(), studioValidateErr, handlerAsync(loginValidate));
+router.post('/login', loginValidate(), studioValidateErr, studioLogin);
 
 
 export default router;

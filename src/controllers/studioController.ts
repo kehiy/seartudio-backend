@@ -106,14 +106,15 @@ export const studioLogin = async (req, res) => {
         where: {
             email
         }
-    })
+    });
+    console.log(studio);
 
     if (studio) {
         const passwordMatch = await bcrypt.compare(passWord, studio.passWord);
         if (passwordMatch) {
             let studioData = new Dto(studio);
-            const token = jwt.sign(studioData, process.env.JWT_SECRET, { expiresIn: '24h' });
-            return apiResponse(res, 200, messageEnum.login_success, { "jwt": token, "studio": studioData });
+            const token = jwt.sign({studioData}, process.env.JWT_SECRET, { expiresIn: '24h' });
+            return apiResponse(res, 200, messageEnum.login_success, { "jwt": token, studioData });
         } else {
             return apiResponse(res, 401, messageEnum.login_faild, {});
         }
@@ -127,7 +128,7 @@ export const studioLogin = async (req, res) => {
         if (admin) {
             const passwordMatch = await bcrypt.compare(passWord, admin.passWord);
             if (passwordMatch) {
-                const token = jwt.sign(admin, process.env.JWT_SECRET, { expiresIn: '24h' });
+                const token = jwt.sign({admin}, process.env.JWT_SECRET, { expiresIn: '24h' });
                 return apiResponse(res, 200, messageEnum.login_success, { "jwt": token, "admin": admin });
             } else {
                 return apiResponse(res, 401, messageEnum.login_faild, {});
