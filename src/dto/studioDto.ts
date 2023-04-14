@@ -14,6 +14,7 @@ export default class Dto {
   isVeryfied: boolean;
   isPromoted: boolean;
   isActive: boolean;
+  role:string;
 
   constructor(model: any) {
     this.name = model.name;
@@ -31,5 +32,6 @@ export default class Dto {
     this.isVeryfied = model.isVeryfied;
     this.isPromoted = model.isPromoted;
     this.isActive = model.isActive;
+    this.role = model.role;
   }
 }
