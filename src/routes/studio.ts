@@ -9,7 +9,6 @@ const router = Router();
 
 router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
 router.post('/signup', signupValidate(), studioValidateErr, studioSignup);
-router.post('/authTest', authenticateAdmin);
 
 
 export default router;
