@@ -99,7 +99,7 @@ export const addStudio = async (req, res) => {
 }
 
 
-export const studioLogin = async (req, res) => {
+export const studioSignup = async (req, res) => {
     const { email, passWord } = req.body;
 
     const studio = await Studio.findOne({

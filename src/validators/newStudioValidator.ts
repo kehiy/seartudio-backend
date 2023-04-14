@@ -82,7 +82,7 @@ export const studioValidate = () => {
   ];
 };
 
-export const loginValidate = () => {
+export const signupValidate = () => {
   return [
     body('email')
     .exists()

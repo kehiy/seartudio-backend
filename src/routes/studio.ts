@@ -1,12 +1,14 @@
 import { Router } from 'express';
-import { addStudio, studioLogin } from '../controllers/studioController';
+import { addStudio, studioSignup } from '../controllers/studioController';
 import { handlerAsync } from 'utils/handler';
-import { studioValidate, studioValidateErr, loginValidate } from '../validators/newStudioValidator';
+import { studioValidate, studioValidateErr, signupValidate } from '../validators/newStudioValidator';
+import { authenticated } from 'middlewares/auth';
 const router = Router();
 
 
 router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
-router.post('/login', loginValidate(), studioValidateErr, studioLogin);
+router.post('/signup', signupValidate(), studioValidateErr, studioSignup);
+router.post('/authTest', authenticated);
 
 
 export default router;

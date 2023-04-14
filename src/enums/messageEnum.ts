@@ -22,5 +22,9 @@ export default {
     login_faild:{
       code:"login_faild",
       text:"email or pass word is invalid!"
+    },
+    err_unauthorized:{
+      code:"err_unauthorized",
+      text:"Unauthorized"
     }
 };
