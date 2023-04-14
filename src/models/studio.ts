@@ -41,7 +41,7 @@ export default function (sequelize: Sequelize): typeof Studio {
                 allowNull: false,
             },
             address: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: false
             },
             province: {
@@ -129,7 +129,7 @@ export default function (sequelize: Sequelize): typeof Studio {
                 defaultValue:null,
             },
             description: {
-                type: DataTypes.STRING,
+                type: DataTypes.TEXT,
                 allowNull: false,
             },
             role: {

@@ -10,7 +10,7 @@ const Studio = DB.Studio;
 export const getHomePage = async (req, res) => {
     const studios = await Studio.findAll({
         where: { isActive: true },
-        order: Sequelize.literal('rand()'),
+        order: Sequelize.literal('RANDOM()'),
         limit: 4
     });
 
