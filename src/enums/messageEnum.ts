@@ -30,5 +30,9 @@ export default {
     err_forbidden:{
       code:"err_forbidden",
       text:"Forbidden"
+    },
+    get_success:{
+      code:"get_success",
+      text:"ok"
     }
 };
