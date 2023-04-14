@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { addStudio } from '../controllers/studioController';
 import { handlerAsync } from 'utils/handler';
-// import { newsLetterValidate, emailValidate } from 'validators/newsLetterValidator';
+import { studioValidate, studioValidateErr } from '../validators/newStudioValidator';
 const router = Router();
 
 
-router.post('/add', handlerAsync(addStudio));
+router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
 
 
 export default router;
