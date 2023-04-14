@@ -26,5 +26,9 @@ export default {
     err_unauthorized:{
       code:"err_unauthorized",
       text:"Unauthorized"
+    },
+    err_forbidden:{
+      code:"err_forbidden",
+      text:"Forbidden"
     }
 };
