@@ -10,7 +10,6 @@ export class Studio extends Model {
     type: string;
     license:string;
     pricePerHour: number;
-    openingHours: string;
     logo: string;
     image: string;
     email: string;
