@@ -5,7 +5,7 @@ import { handlerAsync } from 'utils/handler';
 const router = Router();
 
 
-router.post('/add', addStudio);
+router.post('/add', handlerAsync(addStudio));
 
 
 export default router;

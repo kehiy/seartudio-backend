@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 //
 import { Router } from 'express';
 import DB from '../databases';
-import ClientDto from '../dto/clientDto';
+import ClientDto from '../dto/studioDto';
 
 const Client = DB.Client;
 

@@ -7,17 +7,18 @@ import fs from "fs";
 import bcrypt from "bcrypt";
 import { Op } from "sequelize";
 import { v4 } from "uuid";
+import Dto from "../dto/studioDto";
 
 const Studio = DB.Studio;
-
 
 export const addStudio = async (req, res) => {
     const { studioId, name, phoneNumber,
         address, province, type, license,
         pricePerHour, email, telegramId,
         description, passWord } = req.body;
-    console.log(name);
 
+    let logoFileName;
+    let imageFileName;
     const isExist = await Studio.findOne({
         where: {
             [Op.or]: [
@@ -38,42 +39,40 @@ export const addStudio = async (req, res) => {
     }
 
     if (req.files.image.mimetype === "image/jpeg" || req.files.image.mimetype === "image/png" || req.files.image.mimetype === "image/jpg") {
+        //! upload image
+        let file = req.files.image;
+        const Uid = v4()
+        imageFileName = `${process.env.SERVER}/uploads/${Uid}-${file.name}`
+        const fileNameUpload = `${Uid}-${file.name}`
+        let uploadPath = `src/uploads/${fileNameUpload}`;
+
+        const image = await sharp(file.data)
+            .jpeg({ mozjpeg: true })
+            .toBuffer();
+        fs.writeFileSync(uploadPath, image);
     } else {
         return apiResponse(res, 415, messageEnum.err_Unsupported_Media_Type, "");
     }
 
     if (req.files.logo) {
         if (req.files.logo.mimetype === "image/jpeg" || req.files.logo.mimetype === "image/png" || req.files.logo.mimetype === "image/jpg") {
+            //! upload logo
+            let logoFile = req.files.logo;
+            const logoUid = v4()
+            logoFileName = `${process.env.SERVER}/uploads/${logoUid}-${logoFile.name}`
+            const logoNameUpload = `${logoUid}-${logoFile.name}`
+            let logoUploadPath = `src/uploads/${logoNameUpload}`;
+
+            const logo = await sharp(logoFile.data)
+                .jpeg({ mozjpeg: true })
+                .toBuffer();
+            fs.writeFileSync(logoUploadPath, logo);
         } else {
             return apiResponse(res, 415, messageEnum.err_Unsupported_Media_Type, "");
         }
     } else {
-        const logoFileName = `${process.env.SERVER}/uploads/def-logo.png`;
+        logoFileName = `${process.env.SERVER}/uploads/def-logo.png`;
     }
-
-    //! upload image
-    let file = req.files.image;
-    const Uid = v4()
-    const imageFileName = `${process.env.SERVER}/uploads/${Uid}-${file.name}`
-    const fileNameUpload = `${Uid}-${file.name}`
-    let uploadPath = `src/uploads/${fileNameUpload}`;
-
-    const image = await sharp(file.data)
-        .jpeg({ mozjpeg: true })
-        .toBuffer();
-    fs.writeFileSync(uploadPath, image);
-
-    //! upload logo
-    let logoFile = req.files.logo;
-    const logoUid = v4()
-    const logoFileName = `${process.env.SERVER}/uploads/${logoUid}-${logoFile.name}`
-    const logoNameUpload = `${logoUid}-${logoFile.name}`
-    let logoUploadPath = `src/uploads/${logoNameUpload}`;
-
-    const logo = await sharp(logoFile.data)
-        .jpeg({ mozjpeg: true })
-        .toBuffer();
-    fs.writeFileSync(logoUploadPath, logo);
 
     const SALT = await bcrypt.genSalt(10);
     const hashPassWord = await bcrypt.hash(passWord, SALT);
@@ -95,5 +94,5 @@ export const addStudio = async (req, res) => {
         image: imageFileName
     });
 
-    return apiResponse(res, 201, messageEnum.created_201, { newStudio });
+    return apiResponse(res, 201, messageEnum.created_201, new Dto(newStudio));
 }
