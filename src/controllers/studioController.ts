@@ -141,11 +141,12 @@ export const studioSignup = async (req, res) => {
 
 
 export const updateStudio = async (req, res) => {
-    const { studioId, name, phoneNumber,
+    const { name, phoneNumber,
         address, province, type, license,
         pricePerHour, email, telegramId,
         description } = req.body;
 
+    const studioId = req.studio.studioId;
     const updatedStudio = await Studio.update(
         {
             name,

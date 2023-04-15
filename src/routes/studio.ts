@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addStudio, studioSignup } from '../controllers/studioController';
+import { addStudio, studioSignup, updateStudio } from '../controllers/studioController';
 import { handlerAsync } from 'utils/handler';
 import { studioValidate, studioValidateErr, signupValidate, updateValidate } from '../validators/newStudioValidator';
 import { authenticated } from 'middlewares/auth';
@@ -8,8 +8,8 @@ const router = Router();
 
 
 router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
-router.post('/signup', signupValidate(), studioValidateErr, studioSignup);
-router.post('/update', authenticated, updateValidate(), studioValidateErr, studioSignup);
+router.post('/signup', signupValidate(), studioValidateErr, handlerAsync(studioSignup));
+router.post('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
 
 
 export default router;
