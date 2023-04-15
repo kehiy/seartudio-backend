@@ -98,7 +98,6 @@ export const addStudio = async (req, res) => {
     return apiResponse(res, 201, messageEnum.created_201, new Dto(newStudio));
 }
 
-
 export const studioSignup = async (req, res) => {
     const { email, passWord } = req.body;
 
@@ -198,9 +197,7 @@ export const updateImage = async (req, res) => {
     console.log(newStr);
     console.log(str);
     const path = `${newStr}${filename}`;
-    if (filename !== "def-logo.png") {
-        await fs.unlinkSync(path);
-    };
+    await fs.unlinkSync(path);
 
     if (req.files.image.mimetype === "image/jpeg" || req.files.image.mimetype === "image/png" || req.files.image.mimetype === "image/jpg") {
         //! upload image
@@ -220,6 +217,67 @@ export const updateImage = async (req, res) => {
 
     await Studio.update({
         image: imageFileName
+    },
+        {
+            where: {
+                studioId
+            }
+        });
+
+    const updatedStudio = await Studio.findOne(
+        {
+            where: {
+                studioId
+            }
+        }
+    )
+    return apiResponse(res, 201, messageEnum.created_201, new Dto(updatedStudio));
+}
+
+export const updateLogo = async (req, res) => {
+    const studioId = req.studio.studioId;
+    let logoFileName;
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return apiResponse(res, 400, messageEnum.bad_request, "");
+    }
+
+    const current = await Studio.findOne({
+        where: {
+            studioId
+        }
+    });
+
+    const currentImageUrl = current.logo;
+    const filename = currentImageUrl.split('/').pop();
+    let str = __dirname;
+    let arr = str.split("\\");
+    arr[arr.length - 1] = "uploads\\";
+    let newStr = arr.join("\\");
+    console.log(newStr);
+    console.log(str);
+    const path = `${newStr}${filename}`;
+    if (filename !== "def-logo.png") {
+        await fs.unlinkSync(path);
+    };
+
+    if (req.files.logo.mimetype === "image/jpeg" || req.files.logo.mimetype === "image/png" || req.files.logo.mimetype === "image/jpg") {
+        //! upload image
+        let file = req.files.logo;
+        const Uid = v4()
+        logoFileName = `${process.env.SERVER}/uploads/${Uid}-${file.name}`
+        const fileNameUpload = `${Uid}-${file.name}`
+        let uploadPath = `src/uploads/${fileNameUpload}`;
+
+        const image = await sharp(file.data)
+            .jpeg({ mozjpeg: true })
+            .toBuffer();
+        fs.writeFileSync(uploadPath, image);
+    } else {
+        return apiResponse(res, 415, messageEnum.err_Unsupported_Media_Type, "");
+    }
+
+    await Studio.update({
+        logo: logoFileName
     },
         {
             where: {
