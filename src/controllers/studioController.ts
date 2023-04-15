@@ -191,11 +191,16 @@ export const updateImage = async (req, res) => {
 
     const currentImageUrl = current.image;
     const filename = currentImageUrl.split('/').pop();
-    const path = '../uploads'
-    await fs.unlink(`${path}/${filename}`, err => {
-        return apiResponse(res, 500, messageEnum.server_error, err);
-    });
-
+    let str = __dirname;
+    let arr = str.split("\\");
+    arr[arr.length - 1] = "uploads\\";
+    let newStr = arr.join("\\");
+    console.log(newStr);
+    console.log(str);
+    const path = `${newStr}${filename}`;
+    if (filename !== "def-logo.png") {
+        await fs.unlinkSync(path);
+    };
 
     if (req.files.image.mimetype === "image/jpeg" || req.files.image.mimetype === "image/png" || req.files.image.mimetype === "image/jpg") {
         //! upload image
