@@ -147,7 +147,7 @@ export const updateStudio = async (req, res) => {
         description } = req.body;
 
     const studioId = req.studio.studioId;
-    const updatedStudio = await Studio.update(
+    await Studio.update(
         {
             name,
             phoneNumber,
@@ -166,5 +166,13 @@ export const updateStudio = async (req, res) => {
             }
         }
     );
+
+    const updatedStudio = await Studio.findOne({
+        where:{
+            studioId
+        }
+    });
+
     return apiResponse(res, 201, messageEnum.created_201, new Dto(updatedStudio));
 }
+
