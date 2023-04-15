@@ -34,5 +34,9 @@ export default {
     get_success:{
       code:"get_success",
       text:"ok"
-    }
+    },
+    server_error:{
+      code:"server_error",
+      text:"somethong went worng!"
+    },
 };

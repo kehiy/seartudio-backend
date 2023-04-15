@@ -20,6 +20,6 @@ export const getHomePage = async (req, res) => {
         result.push(studioForResult);
     });
 
-
+    console.log(__dirname);
     return apiResponse(res, 200, messageEnum.get_success, result);
 }

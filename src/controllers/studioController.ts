@@ -168,7 +168,7 @@ export const updateStudio = async (req, res) => {
     );
 
     const updatedStudio = await Studio.findOne({
-        where:{
+        where: {
             studioId
         }
     });
@@ -176,3 +176,58 @@ export const updateStudio = async (req, res) => {
     return apiResponse(res, 201, messageEnum.created_201, new Dto(updatedStudio));
 }
 
+export const updateImage = async (req, res) => {
+    const studioId = req.studio.studioId;
+    let imageFileName;
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return apiResponse(res, 400, messageEnum.bad_request, "");
+    }
+
+    const current = await Studio.findOne({
+        where: {
+            studioId
+        }
+    });
+
+    const currentImageUrl = current.image;
+    const filename = currentImageUrl.split('/').pop();
+    const path = '../uploads'
+    await fs.unlink(`${path}/${filename}`, err => {
+        return apiResponse(res, 500, messageEnum.server_error, err);
+    });
+
+
+    if (req.files.image.mimetype === "image/jpeg" || req.files.image.mimetype === "image/png" || req.files.image.mimetype === "image/jpg") {
+        //! upload image
+        let file = req.files.image;
+        const Uid = v4()
+        imageFileName = `${process.env.SERVER}/uploads/${Uid}-${file.name}`
+        const fileNameUpload = `${Uid}-${file.name}`
+        let uploadPath = `src/uploads/${fileNameUpload}`;
+
+        const image = await sharp(file.data)
+            .jpeg({ mozjpeg: true })
+            .toBuffer();
+        fs.writeFileSync(uploadPath, image);
+    } else {
+        return apiResponse(res, 415, messageEnum.err_Unsupported_Media_Type, "");
+    }
+
+    await Studio.update({
+        image: imageFileName
+    },
+        {
+            where: {
+                studioId
+            }
+        });
+
+    const updatedStudio = await Studio.findOne(
+        {
+            where: {
+                studioId
+            }
+        }
+    )
+    return apiResponse(res, 201, messageEnum.created_201, new Dto(updatedStudio));
+}
