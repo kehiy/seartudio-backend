@@ -114,13 +114,6 @@ export const updateValidate = () => {
     .withMessage('لطفا یک ایمیل معتبر وارد کنید')
     .isString()
     .bail(),
-    body('studioId')
-    .exists()
-    .withMessage('شناسه استودیو نمی تواند خالی باشد')
-    .isLength({min:3,max:20})
-    .withMessage('شناسه استودیو باید حداقل ۳ و حداکثر ۲۰ کاراکتر باشد')
-    .isString()
-    .bail(),
     body('phoneNumber')
     .exists()
     .withMessage('شماره تلفن همراه نمی تواند خالی باشد')
