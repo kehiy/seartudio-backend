@@ -113,7 +113,7 @@ export const studioSignup = async (req, res) => {
         const passwordMatch = await bcrypt.compare(passWord, studio.passWord);
         if (passwordMatch) {
             let studioData = new Dto(studio);
-            const token = jwt.sign({studioData}, process.env.JWT_SECRET, { expiresIn: '24h' });
+            const token = jwt.sign({ studioData }, process.env.JWT_SECRET, { expiresIn: '24h' });
             return apiResponse(res, 200, messageEnum.login_success, { "jwt": token, studioData });
         } else {
             return apiResponse(res, 401, messageEnum.login_faild, {});
@@ -128,7 +128,7 @@ export const studioSignup = async (req, res) => {
         if (admin) {
             const passwordMatch = await bcrypt.compare(passWord, admin.passWord);
             if (passwordMatch) {
-                const token = jwt.sign({admin}, process.env.JWT_SECRET, { expiresIn: '24h' });
+                const token = jwt.sign({ admin }, process.env.JWT_SECRET, { expiresIn: '24h' });
                 return apiResponse(res, 200, messageEnum.login_success, { "jwt": token, "admin": admin });
             } else {
                 return apiResponse(res, 401, messageEnum.login_faild, {});
@@ -137,4 +137,33 @@ export const studioSignup = async (req, res) => {
             return apiResponse(res, 401, messageEnum.login_faild, {});
         }
     }
+}
+
+
+export const updateStudio = async (req, res) => {
+    const { studioId, name, phoneNumber,
+        address, province, type, license,
+        pricePerHour, email, telegramId,
+        description } = req.body;
+
+    const updatedStudio = await Studio.update(
+        {
+            name,
+            phoneNumber,
+            address,
+            province,
+            type,
+            license,
+            pricePerHour,
+            email,
+            telegramId,
+            description
+        },
+        {
+            where: {
+                studioId
+            }
+        }
+    );
+    return apiResponse(res, 201, messageEnum.created_201, new Dto(updatedStudio));
 }
