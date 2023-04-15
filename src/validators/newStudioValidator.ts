@@ -98,6 +98,80 @@ export const signupValidate = () => {
     .bail()
   ];
 };
+export const updateValidate = () => {
+  return [
+    body('name')
+    .exists()
+    .withMessage("نام نمی تواند خالی باشد")
+    .isString()
+    .isLength({min:3,max:25})
+    .withMessage("نام استودیو میتواند حداقل ۳ و حداکثر ۲۵ کاراکتر باشد")
+    .bail(),
+    body("email")
+    .exists()
+    .withMessage('ایمیل نمی تواند خالی باشد')
+    .isEmail()
+    .withMessage('لطفا یک ایمیل معتبر وارد کنید')
+    .isString()
+    .bail(),
+    body('studioId')
+    .exists()
+    .withMessage('شناسه استودیو نمی تواند خالی باشد')
+    .isLength({min:3,max:20})
+    .withMessage('شناسه استودیو باید حداقل ۳ و حداکثر ۲۰ کاراکتر باشد')
+    .isString()
+    .bail(),
+    body('phoneNumber')
+    .exists()
+    .withMessage('شماره تلفن همراه نمی تواند خالی باشد')
+    .matches(/^09\d{9}$/)
+    .withMessage('لطفا یک شماره همراه معتبر وارد کنید')
+    .isNumeric()
+    .bail(),
+    body('address')
+    .exists()
+    .withMessage('آدرس نمی تواند خالی باشد')
+    .isString()
+    .isLength({min:10,max:300})
+    .withMessage('طول آدرس بیشتر یا کمتر از حدمجاز است')
+    .bail(),
+    body('province')
+    .exists()
+    .withMessage('نام استان نمی تواند خالی باشد')
+    .isIn(provinces)
+    .withMessage('نام شهر نامعتبر است')
+    .bail(),
+    body('type')
+    .exists()
+    .isString()
+    .isIn(type)
+    .bail(),
+    body('license')
+    .exists()
+    .isString()
+    .isIn(license)
+    .bail(),
+    body('description')
+    .exists()
+    .withMessage('توضیحات نمی تواند خالی باشد')
+    .isString()
+    .isLength({min:10,max:300})
+    .withMessage('متن توضیحات بیشتر یا کمتر از حد مجاز است')
+    .bail(),
+    body('telegramId')
+    .exists()
+    .withMessage('شناسه تلگرام نمی تواند خالی باشد')
+    .matches(/^\d{9,10}$/)
+    .withMessage('یک شناسه تلگرام معتبر وارد کنید')
+    .bail(),
+    body('pricePerHour')
+    .exists()
+    .withMessage('مبلغ بر اساس ساعت نمی تواند خالی باشد')
+    .isInt()
+    .withMessage('مبلغ بر اساس ساعت را بصورت عدد و تومان وارد کنید برای مثال : 100000 صدهزار تومان هر ساعت')
+    .bail()
+  ];
+};
 
 export const studioValidateErr = (req, res, next)=>{
     const errors = validationResult(req)
