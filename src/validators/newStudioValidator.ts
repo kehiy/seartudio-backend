@@ -70,7 +70,7 @@ export const studioValidate = () => {
     body('telegramId')
     .exists()
     .withMessage('شناسه تلگرام نمی تواند خالی باشد')
-    .matches(/^\d{8,13}$/)
+    .matches(/^\d{9,10}$/)
     .withMessage('یک شناسه تلگرام معتبر وارد کنید')
     .bail(),
     body('pricePerHour')
