@@ -15,6 +15,7 @@ import newsLetter from './routes/newsLetter';
 import studio from './routes/studio';
 import homePage from './routes/homePage';
 import admin from './routes/admin';
+import cron from './routes/cron';
 
 class App {
   public app: express.Application;
@@ -74,6 +75,7 @@ class App {
     });
 
     this.app.use('/', homePage);
+    this.app.use('/cron', cron);
     this.app.use('/admin', admin);
     this.app.use('/newsLetter', newsLetter);
     this.app.use('/studio', studio);

@@ -9,7 +9,7 @@ const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const cornKey = process.env.CRONJOB_KEY;
 
 
-const checkExpier = async (req, res) => {
+export const checkExpier = async (req, res) => {
     const reqCornKey = req.body.cornKey;
     const now = new Date();
 
@@ -42,9 +42,6 @@ const checkExpier = async (req, res) => {
     bot.launch();
     return apiResponse(res,200,messageEnum.cronDone,recordsToDeactivate[1]);
 }
-
-
-
 
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
