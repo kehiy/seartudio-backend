@@ -39,5 +39,21 @@ export const activateStudio = async (req, res) => {
 
     endDate.setMonth(endDate.getMonth() + subscriptionMonths); // Add the number of months to the current date
 
-    
+    await Studio.update({
+        isActive: true,
+        expireDate: endDate
+    },
+        {
+            where: {
+                studioId
+            }
+        }).catch(err => {
+            throw err;
+    });
+
+    const updated = await Studio.findOne({
+        where:{studioId}
+    });
+
+    return apiResponse(res,201,messageEnum.created_201,new Dto(updated));
 }
