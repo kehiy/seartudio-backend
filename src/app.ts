@@ -14,6 +14,7 @@ import errorMiddleware from './middlewares/error';
 import newsLetter from './routes/newsLetter';
 import studio from './routes/studio';
 import homePage from './routes/homePage';
+import admin from './routes/admin';
 
 class App {
   public app: express.Application;
@@ -73,12 +74,13 @@ class App {
     });
 
     this.app.use('/', homePage);
+    this.app.use('/admin', admin);
     this.app.use('/newsLetter', newsLetter);
     this.app.use('/studio', studio);
     this.app.use('/uploads', express.static(__dirname + '/uploads'));
-    this.app.use('/', (req,res)=>{
+    this.app.use('/', (req, res) => {
       res.status(404).json({
-        "msg":"Not Found!"
+        "msg": "Not Found!"
       });
     });
   }
