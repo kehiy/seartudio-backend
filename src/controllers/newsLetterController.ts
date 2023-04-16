@@ -10,9 +10,11 @@ export const addNewsLetter = async (req, res) => {
   const duplicate = await Newsletter.findOne({ where: { email } });
 
   if (!duplicate) {
-    await Newsletter.create({ email });
+    await Newsletter.create({ email }).catch(err => {
+      throw err;
+    });
 
-    return apiResponse(res, 201, messageEnum.created_201, { email,"msg":"successfully added" });
+    return apiResponse(res, 201, messageEnum.created_201, { email, "msg": "successfully added" });
 
   } else {
     return apiResponse(res, 400, messageEnum.bad_request, { "msg": "your already a newsLetter member" });

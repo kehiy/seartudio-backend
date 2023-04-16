@@ -93,6 +93,8 @@ export const addStudio = async (req, res) => {
         passWord: hashPassWord,
         logo: logoFileName,
         image: imageFileName
+    }).catch(err => {
+        throw err;
     });
 
     return apiResponse(res, 201, messageEnum.created_201, new Dto(newStudio));
@@ -164,7 +166,9 @@ export const updateStudio = async (req, res) => {
                 studioId
             }
         }
-    );
+    ).catch(err => {
+        throw err;
+    });
 
     const updatedStudio = await Studio.findOne({
         where: {
@@ -222,6 +226,8 @@ export const updateImage = async (req, res) => {
             where: {
                 studioId
             }
+        }).catch(err => {
+            throw err;
         });
 
     const updatedStudio = await Studio.findOne(
@@ -283,6 +289,8 @@ export const updateLogo = async (req, res) => {
             where: {
                 studioId
             }
+        }).catch(err => {
+            throw err;
         });
 
     const updatedStudio = await Studio.findOne(
