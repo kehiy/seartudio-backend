@@ -39,5 +39,5 @@ export const sendMessage = async (id,text,keyboard) => {
     bot.telegram.sendMessage(id, text, keyboard);
 }
 
-// Start the bot
-bot.launch();
+// export the bot
+export default bot;
