@@ -13,23 +13,36 @@ export const getActiveStudios = async (req, res) => {
             isActive: true
         }
     });
-
-    return apiResponse(res, 200, messageEnum.get_success, new Dto(activeStudios));
+    let resualt = [];
+    activeStudios.forEach(studio=>{
+        const dtoStudio = new Dto(studio);
+        resualt.push(dtoStudio);
+    });
+    return apiResponse(res, 200, messageEnum.get_success,resualt);
 }
 
 export const getDeactiveStudios = async (req, res) => {
-    const activeStudios = await Studio.findAll({
+    const deactiveStudios = await Studio.findAll({
         where: {
             isActive: false
         }
     });
-
-    return apiResponse(res, 200, messageEnum.get_success, new Dto(activeStudios));
+    let resualt = [];
+    deactiveStudios.forEach(studio=>{
+        const dtoStudio = new Dto(studio);
+        resualt.push(dtoStudio);
+    });
+    return apiResponse(res, 200, messageEnum.get_success,resualt);
 }
 
 export const getAllStudios = async (req, res) => {
-    const activeStudios = await Studio.findAll();
-    return apiResponse(res, 200, messageEnum.get_success, new Dto(activeStudios));
+    const allStudios = await Studio.findAll();
+    let resualt = [];
+    allStudios.forEach(studio=>{
+        const dtoStudio = new Dto(studio);
+        resualt.push(dtoStudio);
+    });
+    return apiResponse(res, 200, messageEnum.get_success,resualt);
 }
 
 export const activateStudio = async (req, res) => {

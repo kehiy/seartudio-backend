@@ -88,8 +88,6 @@ export const signupValidate = () => {
     .exists()
     .withMessage('ایمیل نمی تواند خالی باشد')
     .isString()
-    .isEmail()
-    .withMessage('لطفا یک ایمیل معتبر وارد کنید')
     .bail(),
     body('passWord')
     .exists()
