@@ -27,6 +27,8 @@ export const authenticateAdmin = authRouter.use(async (req: any, res: Response, 
         } else if (decodedToken.admin.role === 'admin') {
             const admin = decodedToken.admin;
             req.admin = admin;
+        } else {
+            return apiResponse(res, 403, messageEnum.err_forbidden);
         }
         next();
     } catch (err) {
