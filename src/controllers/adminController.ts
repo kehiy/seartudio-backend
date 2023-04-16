@@ -59,14 +59,16 @@ export const activateStudio = async (req, res) => {
 }
 
 export const promoteStudio = async (req, res) => {
-    const studioId = req.body.studioId;
+    const { studioId, status } = req.body;
     await Studio.update({
-        isPromoted: true
+        isPromoted: status
     },
         {
             where: {
                 studioId
             }
+        }).catch(err => {
+            throw err
         });
 
     const updated = await Studio.findOne({
@@ -85,13 +87,13 @@ export const studioVerification = async (req, res) => {
     },
         { where: { studioId } }).catch(err => {
             throw err
-    });
+        });
 
     const update = await Studio.findOne({
-        where:{
+        where: {
             studioId
         }
     });
 
-    return apiResponse(res,201,messageEnum.created_201,new Dto(update));
+    return apiResponse(res, 201, messageEnum.created_201, new Dto(update));
 }
