@@ -26,3 +26,8 @@ export const getDeactiveStudios = async (req,res) => {
 
     return apiResponse(res,200,messageEnum.get_success,new Dto(activeStudios));
 }
+
+export const getAllStudios = async (req,res) => {
+    const activeStudios = await Studio.findAll();
+    return apiResponse(res,200,messageEnum.get_success,new Dto(activeStudios));
+}
