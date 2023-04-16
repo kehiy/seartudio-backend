@@ -15,6 +15,7 @@
     "axios": "^1.2.1",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
+    "clipboardy": "^3.0.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
