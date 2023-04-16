@@ -140,7 +140,6 @@ export const studioSignup = async (req, res) => {
     }
 }
 
-
 export const updateStudio = async (req, res) => {
     const { name, phoneNumber,
         address, province, type, license,
