@@ -49,11 +49,32 @@ export const activateStudio = async (req, res) => {
             }
         }).catch(err => {
             throw err;
+        });
+
+    const updated = await Studio.findOne({
+        where: { studioId }
+    });
+
+    return apiResponse(res, 201, messageEnum.created_201, new Dto(updated));
+}
+
+export const promoteStudio = async (req, res) => {
+    const studioId = req.body.studioId;
+    await Studio.update({
+        isPromoted: true
+    },
+        {
+            where: {
+                studioId
+            }
     });
 
     const updated = await Studio.findOne({
-        where:{studioId}
+        where:{
+            studioId
+        }
     });
 
     return apiResponse(res,201,messageEnum.created_201,new Dto(updated));
 }
+
