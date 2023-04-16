@@ -67,14 +67,31 @@ export const promoteStudio = async (req, res) => {
             where: {
                 studioId
             }
-    });
+        });
 
     const updated = await Studio.findOne({
+        where: {
+            studioId
+        }
+    });
+
+    return apiResponse(res, 201, messageEnum.created_201, new Dto(updated));
+}
+
+export const studioVerification = async (req, res) => {
+    const { status, studioId } = req.body;
+    await Studio.update({
+        isVeryfied: status
+    },
+        { where: { studioId } }).catch(err => {
+            throw err
+    });
+
+    const update = await Studio.findOne({
         where:{
             studioId
         }
     });
 
-    return apiResponse(res,201,messageEnum.created_201,new Dto(updated));
+    return apiResponse(res,201,messageEnum.created_201,new Dto(update));
 }
-
