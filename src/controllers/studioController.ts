@@ -324,3 +324,53 @@ export const getStudioDetail = async (req, res) => {
     }
     return apiResponse(res, 200, messageEnum.get_success, new Dto(result));
 }
+
+export const getAllStudios = async (req, res) => {
+    const { type, license, province } = req.query;
+
+    const where = {};
+    if (type) {
+        where[Op.or] = [
+            { type },
+        ];
+    }
+    if (license) {
+        if (!where[Op.or]) {
+            where[Op.or] = [];
+        }
+        where[Op.or].push({ license });
+    }
+    if (province) {
+        if (!where[Op.and]) {
+            where[Op.and] = [];
+        }
+        where[Op.and].push({ province });
+    }
+    where[Op.and].push({ isActive: true });
+
+
+    let items = null;
+    if (Object.keys(where).length > 0) {
+        items = await Studio.findAll({
+            where
+        });
+    } else {
+        items = await Studio.findAll({
+            where: {
+                isActive: true
+            }
+        });
+    }
+
+    if (!items) {
+        return apiResponse(res, 404, messageEnum.notFound, {});
+    }
+
+    let result = [];
+    items.forEach(studio => {
+        const studioForResult = new Dto(studio);
+        result.push(studioForResult);
+    });
+
+    return apiResponse(res, 200, messageEnum.get_success, result);
+}
