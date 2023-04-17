@@ -309,3 +309,15 @@ export const updateLogo = async (req, res) => {
     )
     return apiResponse(res, 201, messageEnum.created_201, new Dto(updatedStudio));
 }
+
+export const getStudioDetail = async (req,res) => {
+    const studioId = req.params.studioId;
+     
+    const result = await Studio.findOne({
+        where:{
+            studioId
+        }
+    });
+
+    return apiResponse(res,200,messageEnum.get_success,new Dto(result));
+}
