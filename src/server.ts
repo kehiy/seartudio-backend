@@ -8,5 +8,6 @@ const app = new App();
 
 console.log('Start ...');
 
-bot.launch();
+
 app.listen();
+bot.launch();

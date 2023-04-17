@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 import { Op } from "sequelize";
 import { v4 } from "uuid";
 import Dto from "../dto/studioDto";
+import { sendMessage, sendMessageNormal } from "telegramBot/bot";
 
 const Studio = DB.Studio;
 const Admin = DB.Admin;
@@ -115,6 +116,13 @@ export const studioSignup = async (req, res) => {
         if (passwordMatch) {
             let studioData = new Dto(studio);
             const token = jwt.sign({ studioData }, process.env.JWT_SECRET, { expiresIn: '24h' });
+            try {
+                await sendMessageNormal(studio.telegramId, "یک ورود به حساب کاربری شما صورت گرفت").catch(err=>{
+                    throw err;
+                });
+            } catch (error) {
+                throw error;
+            }
             return apiResponse(res, 200, messageEnum.login_success, { "jwt": token, studioData });
         } else {
             return apiResponse(res, 401, messageEnum.login_faild, {});
