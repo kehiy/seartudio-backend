@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addStudio, studioSignup, updateStudio, updateImage, updateLogo, getStudioDetail } from '../controllers/studioController';
+import { addStudio, studioSignup, updateStudio, updateImage, updateLogo, getStudioDetail, getAllStudios } from '../controllers/studioController';
 import { handlerAsync } from 'utils/handler';
 import { studioValidate, studioValidateErr, signupValidate, updateValidate } from '../validators/newStudioValidator';
 import { authenticated } from 'middlewares/auth';
@@ -12,6 +12,7 @@ router.post('/signup', signupValidate(), studioValidateErr, handlerAsync(studioS
 router.post('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
 router.post('/updateImage', authenticated, handlerAsync(updateImage));
 router.post('/updateLogo', authenticated, handlerAsync(updateLogo));
+router.get('/', handlerAsync(getAllStudios));
 router.get('/:studioId', handlerAsync(getStudioDetail));
 
 
