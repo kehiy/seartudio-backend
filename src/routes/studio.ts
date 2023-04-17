@@ -12,7 +12,7 @@ router.post('/signup', signupValidate(), studioValidateErr, handlerAsync(studioS
 router.post('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
 router.post('/updateImage', authenticated, handlerAsync(updateImage));
 router.post('/updateLogo', authenticated, handlerAsync(updateLogo));
-router.get('/studios/:studioId', handlerAsync(getStudioDetail));
+router.get('/:studioId', handlerAsync(getStudioDetail));
 
 
 export default router;

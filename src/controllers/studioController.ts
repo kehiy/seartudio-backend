@@ -117,7 +117,7 @@ export const studioSignup = async (req, res) => {
             let studioData = new Dto(studio);
             const token = jwt.sign({ studioData }, process.env.JWT_SECRET, { expiresIn: '24h' });
             try {
-                await sendMessageNormal(studio.telegramId, "یک ورود به حساب کاربری شما صورت گرفت").catch(err=>{
+                await sendMessageNormal(studio.telegramId, "یک ورود به حساب کاربری شما صورت گرفت").catch(err => {
                     throw err;
                 });
             } catch (error) {
@@ -310,14 +310,17 @@ export const updateLogo = async (req, res) => {
     return apiResponse(res, 201, messageEnum.created_201, new Dto(updatedStudio));
 }
 
-export const getStudioDetail = async (req,res) => {
+export const getStudioDetail = async (req, res) => {
     const studioId = req.params.studioId;
-     
+
     const result = await Studio.findOne({
-        where:{
-            studioId
+        where: {
+            studioId,
+            isActive: true
         }
     });
-
-    return apiResponse(res,200,messageEnum.get_success,new Dto(result));
+    if (!result) {
+        return apiResponse(res, 404, messageEnum.notFound, {});
+    }
+    return apiResponse(res, 200, messageEnum.get_success, new Dto(result));
 }
