@@ -328,28 +328,19 @@ export const getStudioDetail = async (req, res) => {
 export const getAllStudios = async (req, res) => {
     const { type, license, province } = req.query;
 
-    const where = {};
+    let where: any = {};
     if (type) {
-        where[Op.or] = [
-            { type },
-        ];
+        where.type = type;
     }
     if (license) {
-        if (!where[Op.or]) {
-            where[Op.or] = [];
-        }
-        where[Op.or].push({ license });
+        where.license = license;
     }
     if (province) {
-        if (!where[Op.and]) {
-            where[Op.and] = [];
-        }
-        where[Op.and].push({ province });
+        where.province = province;
     }
-    where[Op.and].push({ isActive: true });
+    where.isActive = true;
 
-
-    let items = null;
+    let items;
     if (Object.keys(where).length > 0) {
         items = await Studio.findAll({
             where
@@ -362,7 +353,7 @@ export const getAllStudios = async (req, res) => {
         });
     }
 
-    if (!items) {
+    if (items.length <= 0) {
         return apiResponse(res, 404, messageEnum.notFound, {});
     }
 
