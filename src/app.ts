@@ -16,6 +16,7 @@ import studio from './routes/studio';
 import homePage from './routes/homePage';
 import admin from './routes/admin';
 import cron from './routes/cron';
+import link from './routes/shortLink';
 
 class App {
   public app: express.Application;
@@ -75,6 +76,7 @@ class App {
     });
 
     this.app.use('/', homePage);
+    this.app.use('/s', link);
     this.app.use('/cron', cron);
     this.app.use('/admin', admin);
     this.app.use('/newsLetter', newsLetter);
