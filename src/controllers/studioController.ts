@@ -5,7 +5,7 @@ import { apiResponse } from "utils/apiRespones";
 import sharp from "sharp";
 import fs from "fs";
 import bcrypt from "bcrypt";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { v4 } from "uuid";
 import Dto from "../dto/studioDto";
 import { sendMessage, sendMessageNormal } from "telegramBot/bot";
@@ -326,7 +326,7 @@ export const getStudioDetail = async (req, res) => {
 }
 
 export const getAllStudios = async (req, res) => {
-    const { type, license, province } = req.query;
+    const { type, license, province, skip } = req.query;
 
     let where: any = {};
     if (type) {
@@ -343,13 +343,15 @@ export const getAllStudios = async (req, res) => {
     let items;
     if (Object.keys(where).length > 0) {
         items = await Studio.findAll({
-            where
+            where,
+            offset: Number(skip) * 10 || 0,
+            limit: 10,
         });
     } else {
         items = await Studio.findAll({
-            where: {
-                isActive: true
-            }
+            where,
+            offset: Number(skip) * 10 || 0,
+            limit: 10,
         });
     }
 
@@ -361,6 +363,16 @@ export const getAllStudios = async (req, res) => {
     items.forEach(studio => {
         const studioForResult = new Dto(studio);
         result.push(studioForResult);
+    });
+
+    result.sort((a, b) => {
+        if (a.isPromoted && !b.isPromoted) {
+            return -1; // a should come before b
+        } else if (!a.isPromoted && b.isPromoted) {
+            return 1; // b should come before a
+        } else {
+            return Math.random() - 0.5; // randomly sort remaining items
+        }
     });
 
     return apiResponse(res, 200, messageEnum.get_success, result);
