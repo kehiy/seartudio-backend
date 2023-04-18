@@ -6,7 +6,7 @@ import { handlerAsync } from 'utils/handler';
 const router = Router();
 
 
-router.get('/:s', handlerAsync(getShortLink));
+router.get('/:studioId', handlerAsync(getShortLink));
 
 
 export default router;
