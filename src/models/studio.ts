@@ -128,6 +128,11 @@ export default function (sequelize: Sequelize): typeof Studio {
                 allowNull: true,
                 defaultValue:null,
             },
+            promotExpireDate: {
+                type: DataTypes.DATE,
+                allowNull: true,
+                defaultValue:null,
+            },
             description: {
                 type: DataTypes.TEXT,
                 allowNull: false,

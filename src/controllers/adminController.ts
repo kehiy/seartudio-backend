@@ -75,9 +75,15 @@ export const activateStudio = async (req, res) => {
 }
 
 export const promoteStudio = async (req, res) => {
-    const { studioId, status } = req.body;
+    const { studioId, promotMonths } = req.body;
+
+    let endDate = new Date(); // Get the current date/time
+
+    endDate.setMonth(endDate.getMonth() + promotMonths); // Add the number of months to the current date
+
     await Studio.update({
-        isPromoted: status
+        isPromoted: true,
+        promotExpireDate: endDate,
     },
         {
             where: {
