@@ -7,7 +7,7 @@ import { sendMessage } from "telegramBot/bot";
 
 const Studio = DB.Studio;
 
-const cornKey = process.env.CRONJOB_KEY;
+const cornKey = process.env.SUPER_ACCESS_KEY;
 
 
 
