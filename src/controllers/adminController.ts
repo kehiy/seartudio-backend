@@ -2,7 +2,10 @@ import messageEnum from "enums/messageEnum";
 import { apiResponse } from "utils/apiRespones";
 import DB from "../databases";
 import Dto from "dto/studioDto";
+import bcrypt from "bcrypt";
 
+
+const suacKey = process.env.SUPER_ACCESS_KEY
 const Admin = DB.Admin;
 const Studio = DB.Studio;
 
@@ -14,11 +17,11 @@ export const getActiveStudios = async (req, res) => {
         }
     });
     let resualt = [];
-    activeStudios.forEach(studio=>{
+    activeStudios.forEach(studio => {
         const dtoStudio = new Dto(studio);
         resualt.push(dtoStudio);
     });
-    return apiResponse(res, 200, messageEnum.get_success,resualt);
+    return apiResponse(res, 200, messageEnum.get_success, resualt);
 }
 
 export const getDeactiveStudios = async (req, res) => {
@@ -28,21 +31,21 @@ export const getDeactiveStudios = async (req, res) => {
         }
     });
     let resualt = [];
-    deactiveStudios.forEach(studio=>{
+    deactiveStudios.forEach(studio => {
         const dtoStudio = new Dto(studio);
         resualt.push(dtoStudio);
     });
-    return apiResponse(res, 200, messageEnum.get_success,resualt);
+    return apiResponse(res, 200, messageEnum.get_success, resualt);
 }
 
 export const getAllStudios = async (req, res) => {
     const allStudios = await Studio.findAll();
     let resualt = [];
-    allStudios.forEach(studio=>{
+    allStudios.forEach(studio => {
         const dtoStudio = new Dto(studio);
         resualt.push(dtoStudio);
     });
-    return apiResponse(res, 200, messageEnum.get_success,resualt);
+    return apiResponse(res, 200, messageEnum.get_success, resualt);
 }
 
 export const activateStudio = async (req, res) => {
@@ -109,4 +112,38 @@ export const studioVerification = async (req, res) => {
     });
 
     return apiResponse(res, 201, messageEnum.created_201, new Dto(update));
+}
+
+export const AddAdmin = async (req, res) => {
+    const { passWord, email, reqSuacKey } = req.body;
+
+    if (reqSuacKey !== suacKey) {
+        return apiResponse(res, 401, messageEnum.err_forbidden, {});
+    }
+
+    const SALT = await bcrypt.genSalt(10);
+    const hashPassWord = await bcrypt.hash(passWord, SALT);
+
+    const newAdmin = await Admin.create({
+        passWord: hashPassWord,
+        email
+    });
+
+    return apiResponse(res, 201, messageEnum.created_201, newAdmin);
+}
+
+export const removeAdmin = async (req, res) => {
+    const { email, reqSuacKey } = req.body;
+
+    if (reqSuacKey !== suacKey) {
+        return apiResponse(res, 401, messageEnum.err_forbidden, {});
+    }
+
+    const removedAdmin = await Admin.destroy({
+        where: {
+            email
+        }
+    });
+
+    return apiResponse(res, 201, messageEnum.notFound, removedAdmin);
 }
