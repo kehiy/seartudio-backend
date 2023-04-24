@@ -12,7 +12,7 @@ const cornKey = process.env.SUPER_ACCESS_KEY;
 
 
 
-export const checkExpier = async (req, res) => {
+export const checkPromotExpier = async (req, res) => {
     const reqCornKey = req.body.cornKey;
     const now = moment();
 
@@ -25,10 +25,10 @@ export const checkExpier = async (req, res) => {
     ]);
 
     const recordsToDeactivate = await Studio.update(
-        { isActive: false },
+        { isPromoted: false },
         {
             where: {
-                isActive: true,
+                isPromoted: true,
                 expireDate: { [Op.lte]: now }
             },
             returning: true
@@ -36,15 +36,15 @@ export const checkExpier = async (req, res) => {
             throw err;
         });
 
-        recordsToDeactivate[1].forEach(async studio => {
-            try {
-                const text =  messageEnum.telegramStudioExpire.message.replace('{name}', studio.name);
-                await sendMessage(studio.telegramId,text,keyboardMarkup);
-            } catch (err) {
-                console.log(err);
-            }       
-            await delay(2000);
-        });
+    recordsToDeactivate[1].forEach(async studio => {
+        try {
+            const text = messageEnum.telegramStudioExpire.promotMessage.replace('{name}', studio.name);
+            await sendMessage(studio.telegramId, text, keyboardMarkup);
+        } catch (err) {
+            console.log(err);
+        }
+        await delay(2000);
+    });
 
     return apiResponse(res, 200, messageEnum.cronDone, recordsToDeactivate[1]);
 }
