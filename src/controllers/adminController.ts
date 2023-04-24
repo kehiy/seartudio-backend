@@ -3,7 +3,7 @@ import { apiResponse } from "utils/apiRespones";
 import DB from "../databases";
 import Dto from "dto/studioDto";
 import bcrypt from "bcrypt";
-
+import moment from "moment";
 
 const suacKey = process.env.SUPER_ACCESS_KEY
 const Admin = DB.Admin;
@@ -51,9 +51,9 @@ export const getAllStudios = async (req, res) => {
 export const activateStudio = async (req, res) => {
     const { subscriptionMonths, studioId } = req.body;
 
-    let endDate = new Date(); // Get the current date/time
+    let endDate = moment(); // Get the current date/time
 
-    endDate.setMonth(endDate.getMonth() + subscriptionMonths); // Add the number of months to the current date
+    endDate.add(subscriptionMonths, "M"); // Add the number of months to the current date
 
     await Studio.update({
         isActive: true,
@@ -71,15 +71,16 @@ export const activateStudio = async (req, res) => {
         where: { studioId }
     });
 
-    return apiResponse(res, 201, messageEnum.created_201, new Dto(updated));
+    return apiResponse(res, 201, messageEnum.created_201, updated);
 }
 
 export const promoteStudio = async (req, res) => {
     const { studioId, promotMonths } = req.body;
 
-    let endDate = new Date(); // Get the current date/time
-
-    endDate.setMonth(endDate.getMonth() + promotMonths); // Add the number of months to the current date
+    let endDate = moment(); // Get the current date/time
+    console.log(endDate);
+    endDate.add(promotMonths, "M");
+    console.log(endDate);
 
     await Studio.update({
         isPromoted: true,
@@ -99,7 +100,7 @@ export const promoteStudio = async (req, res) => {
         }
     });
 
-    return apiResponse(res, 201, messageEnum.created_201, new Dto(updated));
+    return apiResponse(res, 201, messageEnum.created_201, updated);
 }
 
 export const studioVerification = async (req, res) => {
