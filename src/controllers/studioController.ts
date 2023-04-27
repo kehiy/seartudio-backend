@@ -325,21 +325,6 @@ export const getStudioDetail = async (req, res) => {
     return apiResponse(res, 200, messageEnum.get_success, new Dto(result));
 }
 
-export const getShortLink = async (req, res) => {
-    const studioId = req.params.studioId;
-
-    const result = await Studio.findOne({
-        where: {
-            studioId,
-            isActive: true
-        }
-    });
-    if (!result) {
-        return apiResponse(res, 404, messageEnum.notFound, {});
-    }
-    return apiResponse(res, 200, messageEnum.get_success, new Dto(result));
-}
-
 export const getAllStudios = async (req, res) => {
     const { type, license, province, skip } = req.query;
 
