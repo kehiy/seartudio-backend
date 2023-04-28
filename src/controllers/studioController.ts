@@ -320,7 +320,7 @@ export const getStudioDetail = async (req, res) => {
         }
     });
     if (!result) {
-        return apiResponse(res, 404, messageEnum.notFound, {});
+        return apiResponse(res, 404, messageEnum.notFound, {"from detail":"!ok"});
     }
     return apiResponse(res, 200, messageEnum.get_success, new Dto(result));
 }
@@ -356,7 +356,7 @@ export const getAllStudios = async (req, res) => {
     }
 
     if (items.length <= 0) {
-        return apiResponse(res, 404, messageEnum.notFound, {});
+        return apiResponse(res, 404, messageEnum.notFound, {"from allll":"!ok"});
     }
 
     let result = [];
