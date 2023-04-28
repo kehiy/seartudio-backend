@@ -7,13 +7,13 @@ import { authenticated } from 'middlewares/auth';
 const router = Router();
 
 
-router.get('/id/:studioId', handlerAsync(getStudioDetail));
-router.get('/', getAllStudios);
 router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
 router.post('/signup', signupValidate(), studioValidateErr, handlerAsync(studioSignup));
 router.post('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
 router.post('/updateImage', authenticated, handlerAsync(updateImage));
 router.post('/updateLogo', authenticated, handlerAsync(updateLogo));
+router.get('/id/:studioId', handlerAsync(getStudioDetail));
+router.get('/', getAllStudios);
 
 
 export default router;
