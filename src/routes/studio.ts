@@ -8,12 +8,12 @@ const router = Router();
 
 
 router.get('/', getAllStudios);
-router.get('/:studioId', handlerAsync(getStudioDetail));
 router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
 router.post('/signup', signupValidate(), studioValidateErr, handlerAsync(studioSignup));
 router.post('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
 router.post('/updateImage', authenticated, handlerAsync(updateImage));
 router.post('/updateLogo', authenticated, handlerAsync(updateLogo));
+router.get('/id/:studioId', handlerAsync(getStudioDetail));
 
 
 export default router;
