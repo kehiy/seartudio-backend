@@ -56,6 +56,6 @@ else
     #rename and start pervious container and image
     docker rename ${CONTAINER_NAME}-old $CONTAINER_NAME
     docker tag seartudio-backend-old:latest seartudio-backend:latest
-    docker start ${CONTAINER_NAME}
+     
 
 fi
