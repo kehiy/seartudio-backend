@@ -89,7 +89,6 @@ web_modules/
 .idea
 .DS_Store
 build
-uploads/
 package-lock.json
 
 # Next.js build output
