@@ -328,7 +328,7 @@ export const getStudioDetail = async (req, res) => {
 export const getAllStudios = async (req, res) => {
     const { type, license, province } = req.query;
 
-    let skip = req.body.skip ? Number(req.body.skip) : 0;
+    let skip = req.query.skip ? Number(req.query.skip) : 0;
     let defaultLimit = 10;
 
     
