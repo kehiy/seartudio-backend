@@ -48,7 +48,7 @@ class App {
   }
 
   private initializeMiddlewares() {
-    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS, allowedHeaders:"*" }));
+    this.app.use(cors({ origin: "*", credentials: true, allowedHeaders:"*" }));
     this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());

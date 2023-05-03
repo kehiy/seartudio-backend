@@ -4,7 +4,7 @@ import messageEnum from 'enums/messageEnum';
 
 const Newsletter = DB.Newsletter;
 
-export const addNewsLetter = async (req, res) => {
+export const    addNewsLetter = async (req, res) => {
   const { email } = req.body;
 
   const duplicate = await Newsletter.findOne({ where: { email } });

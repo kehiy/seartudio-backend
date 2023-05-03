@@ -328,14 +328,15 @@ export const getStudioDetail = async (req, res) => {
 export const getAllStudios = async (req, res) => {
     const { type, license, province, skip } = req.query;
 
+    const all = "همه"
     let where: any = {};
-    if (type) {
+    if (type !== all && type) {
         where.type = type;
     }
-    if (license) {
+    if (license !== all && license) {
         where.license = license;
     }
-    if (province) {
+    if (province !== all && license) {
         where.province = province;
     }
     where.isActive = true;
