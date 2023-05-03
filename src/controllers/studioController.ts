@@ -326,7 +326,12 @@ export const getStudioDetail = async (req, res) => {
 }
 
 export const getAllStudios = async (req, res) => {
-    const { type, license, province, skip } = req.query;
+    const { type, license, province } = req.query;
+
+    let skip = req.body.skip ? Number(req.body.skip) : 0;
+    let defaultLimit = 10;
+
+    
 
     const all = "همه";
 
@@ -347,14 +352,14 @@ export const getAllStudios = async (req, res) => {
     if (Object.keys(where).length > 0) {
         items = await Studio.findAll({
             where,
-            offset: Number(skip) * 10 || 0,
-            limit: 10,
+            offset: skip,
+            limit: defaultLimit,
         });
     } else {
         items = await Studio.findAll({
             where,
-            offset: Number(skip) * 10 || 0,
-            limit: 10,
+            offset: skip,
+            limit: defaultLimit,
         });
     }
 
