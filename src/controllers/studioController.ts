@@ -320,7 +320,7 @@ export const getStudioDetail = async (req, res) => {
         }
     });
     if (!result) {
-        return apiResponse(res, 404, messageEnum.notFound, {"from detail":"!ok"});
+        return apiResponse(res, 404, messageEnum.notFound, { "from detail": "!ok" });
     }
     return apiResponse(res, 200, messageEnum.get_success, new Dto(result));
 }
@@ -331,7 +331,7 @@ export const getAllStudios = async (req, res) => {
     let skip = req.query.skip ? Number(req.query.skip) : 0;
     let defaultLimit = 10;
 
-    
+
 
     const all = "همه";
 
@@ -364,7 +364,7 @@ export const getAllStudios = async (req, res) => {
     }
 
     if (items.length <= 0) {
-        return apiResponse(res, 404, messageEnum.notFound, {"from allll":"!ok"});
+        return apiResponse(res, 404, messageEnum.notFound, { "from allll": "!ok" });
     }
 
     let result = [];
@@ -384,4 +384,10 @@ export const getAllStudios = async (req, res) => {
     });
 
     return apiResponse(res, 200, messageEnum.get_success, result);
+}
+
+export const getMe = async (req, res) => {
+    const authHeader = req.headers.authorization;
+    let data = jwt.decode(authHeader);
+    return apiResponse(res, 200, messageEnum.get_success, data);
 }
