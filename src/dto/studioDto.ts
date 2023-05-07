@@ -15,6 +15,7 @@ export default class Dto {
   isPromoted: boolean;
   isActive: boolean;
   role:string;
+  telegramId: number
 
   constructor(model: any) {
     this.name = model.name;
@@ -33,5 +34,6 @@ export default class Dto {
     this.isPromoted = model.isPromoted;
     this.isActive = model.isActive;
     this.role = model.role;
+    this.telegramId = model.telegramId;
   }
 }

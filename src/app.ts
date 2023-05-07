@@ -61,7 +61,7 @@ class App {
 
     const limiter = rateLimit({
       windowMs: 60000,
-      max: 60,
+      max: 200,
       handler: (req, res) => {
         return res.status(429).json({ message: 'Too many requests' });
       },
