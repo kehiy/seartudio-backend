@@ -7,9 +7,9 @@ import { authenticated } from 'middlewares/auth';
 const router = Router();
 
 
-router.post('/updateLogo', authenticated, handlerAsync(updateLogo));
-router.post('/updateImage', authenticated, handlerAsync(updateImage));
-router.post('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
+router.patch('/updateLogo', authenticated, handlerAsync(updateLogo));
+router.patch('/updateImage', authenticated, handlerAsync(updateImage));
+router.patch('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
 router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
 router.post('/signup', signupValidate(), studioValidateErr, handlerAsync(studioSignup));
 router.get('/id/:studioId', handlerAsync(getStudioDetail));
