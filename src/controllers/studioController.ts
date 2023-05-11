@@ -391,7 +391,7 @@ export const getMe = async (req, res) => {
 
     let data : any = jwt.decode(authHeader);
     let result : any = null;
-    let studioId : string = undefined;
+    let studioId : any = undefined;
     if(!(data.studioData.studioId)){
         studioId = undefined;
     }
