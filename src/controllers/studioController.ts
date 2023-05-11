@@ -389,27 +389,23 @@ export const getAllStudios = async (req, res) => {
 export const getMe = async (req, res) => {
     const authHeader = req.headers.authorization;
     let data: any = jwt.decode(authHeader);
-    let adminResult = null;
-    let studioId = data.studioData.studioId;
-    let result = await Studio.findOne({
-        where: {
-            studioId
-        }
-    });
-    if (!result) {
+    let result = null;
+    if (data.studioData.studioId) {
+        let studioId = data.studioData.studioId;
+        result = await Studio.findOne({
+            where: {
+                studioId
+            }
+        });
+    } else if (data.admin.id) {
         let adminId = data.admin.id;
-        adminResult = await Admin.findOne({
+        result = await Admin.findOne({
             where: {
                 id: adminId
             }
         });
-    }
-    if (result) {
-        return apiResponse(res, 200, messageEnum.get_success, result);
-    }
-    if (adminResult) {
-        return apiResponse(res, 200, messageEnum.get_success, adminResult);
     } else {
         return apiResponse(res, 200, messageEnum.get_success, "");
     }
+    return apiResponse(res, 200, messageEnum.get_success, result);
 }
