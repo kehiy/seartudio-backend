@@ -394,7 +394,7 @@ export const getMe = async (req, res) => {
     let studioId : any = null;
 
 
-    if(data.studioData.studioId){
+    if(data.studioData){
         studioId = data.studioData.studioId;
         result = await Studio.findOne({
             where:{
