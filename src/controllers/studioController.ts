@@ -391,6 +391,9 @@ export const getMe = async (req, res) => {
 
     let data: any = jwt.decode(authHeader);
     console.log(data);
+    console.log(data);
+    console.log(data);
+    console.log(data);
 
     let result = null;
 
