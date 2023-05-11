@@ -389,7 +389,13 @@ export const getAllStudios = async (req, res) => {
 export const getMe = async (req, res) => {
     const authHeader = req.headers.authorization;
 
+    console.log(authHeader);
+    console.log(authHeader);
+    console.log(authHeader);
+    console.log(authHeader);
+
     let data: any = jwt.decode(authHeader);
+    
     console.log(data);
     console.log(data);
     console.log(data);
