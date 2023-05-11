@@ -389,15 +389,15 @@ export const getAllStudios = async (req, res) => {
 export const getMe = async (req, res) => {
     const authHeader = req.headers.authorization;
 
-    let data : any = jwt.decode(authHeader);
+    let data : any = await jwt.decode(authHeader);
     let result : any = null;
     let studioId : any = undefined;
-    if(!(data.studioData.studioId)){
+
+    if(!(((data).studioData).studioId)){
         studioId = undefined;
     }
 
-
-    if(typeof studioId !== 'undefined'){
+    if(studioId){
         studioId = data.studioData.studioId;
         result = await Studio.findOne({
             where:{
