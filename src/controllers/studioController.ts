@@ -395,29 +395,29 @@ export const getMe = async (req, res) => {
 
     let result = null;
 
-    if(!data.studioData.studioId && !data.admin.id){
-        return apiResponse(res, 404, messageEnum.notFound, "");
-    }
+    // if(!data.studioData.studioId && !data.admin.id){
+    //     return apiResponse(res, 404, messageEnum.notFound, "");
+    // }
 
-    if (data.studioData.studioId) {
-        id = data.studioData.studioId;
-        result = await Studio.findOne({
-            where: {
-                studioId: id
-            }
-        });
-        return apiResponse(res, 200, messageEnum.get_success, result);
-    }
+    // if (data.studioData.studioId) {
+    //     id = data.studioData.studioId;
+    //     result = await Studio.findOne({
+    //         where: {
+    //             studioId: id
+    //         }
+    //     });
+    //     return apiResponse(res, 200, messageEnum.get_success, result);
+    // }
 
-    if (data.admin.id) {
-        id = data.admin.id;
-        result = await Admin.findOne({
-            where: {
-                id
-            }
-        });
-        return apiResponse(res, 200, messageEnum.get_success, result);
-    }
+    // if (data.admin.id) {
+    //     id = data.admin.id;
+    //     result = await Admin.findOne({
+    //         where: {
+    //             id
+    //         }
+    //     });
+    //     return apiResponse(res, 200, messageEnum.get_success, result);
+    // }
 
-    return apiResponse(res, 404, messageEnum.notFound, "");
+    return apiResponse(res, 404, messageEnum.notFound, data);
 }
