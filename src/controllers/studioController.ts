@@ -388,16 +388,20 @@ export const getAllStudios = async (req, res) => {
 
 export const getMe = async (req, res) => {
     const authHeader = req.headers.authorization;
+
     let data: any = jwt.decode(authHeader);
+
     let result = null;
-    if (data.studioData.studioId) {
+
+    if (data.studioData.studioId !== undefined) {
         let id = data.studioData.studioId;
         result = await Studio.findOne({
             where: {
                 studioId:id
             }
         });
-    } else if (data.admin.id) {
+    } 
+    if (data.admin.id !== undefined) {
         let adminId = data.admin.id;
         result = await Admin.findOne({
             where: {
