@@ -389,7 +389,7 @@ export const getAllStudios = async (req, res) => {
 export const getMe = async (req, res) => {
     const authHeader = req.headers.authorization;
     let data : any = jwt.decode(authHeader);
-    let studioId = data.studioData.studioId;
+    let studioId = data.studioData.studioId ? data.studioData.studioId : null;
     let result : any = null;
     result = await Studio.findOne({
         where:{
