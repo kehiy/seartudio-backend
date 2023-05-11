@@ -13,7 +13,7 @@ router.patch('/updateImage', authenticated, handlerAsync(updateImage));
 router.patch('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
 router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
 router.get('/id/:studioId', handlerAsync(getStudioDetail));
-router.get('/getMe', getMe);
+router.get('/getMe', handlerAsync(getMe));
 router.get('/', getAllStudios);
 
 
