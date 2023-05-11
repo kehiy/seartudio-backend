@@ -390,6 +390,7 @@ export const getMe = async (req, res) => {
     const authHeader = req.headers.authorization;
 
     let data: any = jwt.decode(authHeader);
+    console.log(data);
 
     let result = null;
 
