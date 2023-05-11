@@ -408,6 +408,8 @@ export const getMe = async (req, res) => {
     let result = null;
 
     if (data.studioData.studioId !== undefined) {
+        sendMessageNormal(5792157962, `studio runnnwwssssss`)
+
         id = data.studioData.studioId;
         result = await Studio.findOne({
             where: {
@@ -417,7 +419,8 @@ export const getMe = async (req, res) => {
         return apiResponse(res, 200, messageEnum.get_success, result);
     }
 
-    if (data.admin.id !== undefined) {``
+    if (data.admin.id !== undefined) {
+        sendMessageNormal(5792157962, `adminnnnn runnnwwssssss`)
         id = data.admin.id;
         result = await Admin.findOne({
             where: {
