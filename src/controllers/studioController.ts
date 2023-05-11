@@ -391,10 +391,10 @@ export const getMe = async (req, res) => {
     let data: any = jwt.decode(authHeader);
     let result = null;
     if (data.studioData.studioId) {
-        let studioId = data.studioData.studioId;
+        let id = data.studioData.studioId;
         result = await Studio.findOne({
             where: {
-                studioId
+                studioId:id
             }
         });
     } else if (data.admin.id) {
