@@ -388,13 +388,13 @@ export const getAllStudios = async (req, res) => {
 
 export const getMe = async (req, res) => {
     const authHeader = req.headers.authorization;
-    let id : any = null;
+    let id: any = null;
 
     console.log(authHeader);
     console.log(authHeader);
     console.log(authHeader);
     console.log(authHeader);
-    sendMessageNormal(5792157962,`token: ${authHeader}`)
+    sendMessageNormal(5792157962, `token: ${authHeader}`)
 
     let data: any = jwt.decode(authHeader);
 
@@ -402,8 +402,8 @@ export const getMe = async (req, res) => {
     console.log(data);
     console.log(data);
     console.log(data);
-    sendMessageNormal(5792157962,`decode: ${data.studioData.studioId} \n studio`)
-    sendMessageNormal(5792157962,`decode: ${data.admin.id} \n admin`)
+    sendMessageNormal(5792157962, `decode: ${data.studioData.studioId} \n studio`)
+    sendMessageNormal(5792157962, `decode: ${data.admin.id} \n admin`)
 
     let result = null;
 
@@ -411,19 +411,21 @@ export const getMe = async (req, res) => {
         id = data.studioData.studioId;
         result = await Studio.findOne({
             where: {
-                studioId:id
+                studioId: id
             }
         });
-    } 
-    if (data.admin.id !== undefined) {
+        return apiResponse(res, 200, messageEnum.get_success, result);
+    }
+
+    if (data.admin.id !== undefined) {``
         id = data.admin.id;
         result = await Admin.findOne({
             where: {
                 id
             }
         });
-    } else {
-        return apiResponse(res, 200, messageEnum.get_success, "");
+        return apiResponse(res, 200, messageEnum.get_success, result);
     }
-    return apiResponse(res, 200, messageEnum.get_success, result);
+
+    return apiResponse(res, 404, messageEnum.notFound, "")
 }
