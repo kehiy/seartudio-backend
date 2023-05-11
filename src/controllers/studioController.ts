@@ -388,6 +388,7 @@ export const getAllStudios = async (req, res) => {
 
 export const getMe = async (req, res) => {
     const authHeader = req.headers.authorization;
+    let id : any = null;
 
     console.log(authHeader);
     console.log(authHeader);
@@ -407,7 +408,7 @@ export const getMe = async (req, res) => {
     let result = null;
 
     if (data.studioData.studioId !== undefined) {
-        let id = data.studioData.studioId;
+        id = data.studioData.studioId;
         result = await Studio.findOne({
             where: {
                 studioId:id
@@ -415,10 +416,10 @@ export const getMe = async (req, res) => {
         });
     } 
     if (data.admin.id !== undefined) {
-        let adminId = data.admin.id;
+        id = data.admin.id;
         result = await Admin.findOne({
             where: {
-                id: adminId
+                id
             }
         });
     } else {
