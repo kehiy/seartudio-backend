@@ -390,26 +390,12 @@ export const getMe = async (req, res) => {
     const authHeader = req.headers.authorization;
     let id: any = null;
 
-    console.log(authHeader);
-    console.log(authHeader);
-    console.log(authHeader);
-    console.log(authHeader);
-    sendMessageNormal(5792157962, `token: ${authHeader}`)
-
     let data: any = jwt.decode(authHeader);
 
-    console.log(data);
-    console.log(data);
-    console.log(data);
-    console.log(data);
-    sendMessageNormal(5792157962, `decode: ${data.studioData.studioId} \n studio`)
-    sendMessageNormal(5792157962, `decode: ${data.admin.id} \n admin`)
 
     let result = null;
 
     if (data.studioData.studioId !== undefined) {
-        sendMessageNormal(5792157962, `studio runnnwwssssss`)
-
         id = data.studioData.studioId;
         result = await Studio.findOne({
             where: {
@@ -420,7 +406,6 @@ export const getMe = async (req, res) => {
     }
 
     if (data.admin.id !== undefined) {
-        sendMessageNormal(5792157962, `adminnnnn runnnwwssssss`)
         id = data.admin.id;
         result = await Admin.findOne({
             where: {
