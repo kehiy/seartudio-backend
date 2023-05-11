@@ -401,7 +401,8 @@ export const getMe = async (req, res) => {
     console.log(data);
     console.log(data);
     console.log(data);
-    sendMessageNormal(5792157962,`decode: ${data}`)
+    sendMessageNormal(5792157962,`decode: ${data.studioData.studioId} \n studio`)
+    sendMessageNormal(5792157962,`decode: ${data.admin.id} \n admin`)
 
     let result = null;
 
