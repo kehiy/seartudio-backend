@@ -526,5 +526,6 @@ export const updatePassWord = async (req, res) => {
     return apiResponse(res, 201, messageEnum.created_201, { "msg": "passWord updated successfully." });
 }
 
-
-
+const getLink = async (req,res) => {
+    return apiResponse(res,200,,messageEnum.get_success,"https://t.me/seartudio"); 
+}
