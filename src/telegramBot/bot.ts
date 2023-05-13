@@ -36,7 +36,7 @@ export const sendMessage = async (id, text, keyboard) => {
     });
 }
 export const sendMessageNormal = async (id, text) => {
-    bot.telegram.sendMessage(id, text).catch(err=>{
+    bot.telegram.sendMessage(id, text,{ parse_mode: "Markdown" }).catch(err=>{
         return;
     });
 }

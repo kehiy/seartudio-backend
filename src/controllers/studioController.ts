@@ -475,7 +475,7 @@ export const frogotPassWord = async (req, res) => {
 
     const link = `https://api.seartudio.com/studio/forgotPass?token=${token}`;
 
-    await sendMessageNormal(studio.telegramId, `برای دریافت رمز عبور جدید \n ${link}`);
+    await sendMessageNormal(studio.telegramId, `برای دریافت رمز عبور جدید \n \`${link}\``);
     await transporter.sendMail({
         from: 'noreply@seartudio.com',
         to: studio.email,
