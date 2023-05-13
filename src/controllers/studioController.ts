@@ -527,5 +527,5 @@ export const updatePassWord = async (req, res) => {
 }
 
 const getLink = async (req,res) => {
-    return apiResponse(res,200,,messageEnum.get_success,"https://t.me/seartudio"); 
+    return apiResponse(res,200,messageEnum.get_success,"https://t.me/seartudio"); 
 }
