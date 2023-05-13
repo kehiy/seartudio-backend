@@ -193,22 +193,22 @@ export const updateImage = async (req, res) => {
         return apiResponse(res, 400, messageEnum.bad_request, "");
     }
 
-    const current = await Studio.findOne({
-        where: {
-            studioId
-        }
-    });
+    // const current = await Studio.findOne({
+    //     where: {
+    //         studioId
+    //     }
+    // });
 
-    const currentImageUrl = current.image;
-    const filename = currentImageUrl.split('/').pop();
-    let str = __dirname;
-    let arr = str.split("\\");
-    arr[arr.length - 1] = "uploads\\";
-    let newStr = arr.join("\\");
-    console.log(newStr);
-    console.log(str);
-    const path = `${newStr}${filename}`;
-    await fs.unlinkSync(path);
+    // const currentImageUrl = current.image;
+    // const filename = currentImageUrl.split('/').pop();
+    // let str = __dirname;
+    // let arr = str.split("\\");
+    // arr[arr.length - 1] = "uploads\\";
+    // let newStr = arr.join("\\");
+    // console.log(newStr);
+    // console.log(str);
+    // const path = `${newStr}${filename}`;
+    // await fs.unlinkSync(path);
 
     if (req.files.image.mimetype === "image/jpeg" || req.files.image.mimetype === "image/png" || req.files.image.mimetype === "image/jpg") {
         //! upload image
@@ -254,24 +254,24 @@ export const updateLogo = async (req, res) => {
         return apiResponse(res, 400, messageEnum.bad_request, "");
     }
 
-    const current = await Studio.findOne({
-        where: {
-            studioId
-        }
-    });
+    // const current = await Studio.findOne({
+    //     where: {
+    //         studioId
+    //     }
+    // });
 
-    const currentImageUrl = current.logo;
-    const filename = currentImageUrl.split('/').pop();
-    let str = __dirname;
-    let arr = str.split("\\");
-    arr[arr.length - 1] = "uploads\\";
-    let newStr = arr.join("\\");
-    console.log(newStr);
-    console.log(str);
-    const path = `${newStr}${filename}`;
-    if (filename !== "def-logo.png") {
-        await fs.unlinkSync(path);
-    };
+    // const currentImageUrl = current.logo;
+    // const filename = currentImageUrl.split('/').pop();
+    // let str = __dirname;
+    // let arr = str.split("\\");
+    // arr[arr.length - 1] = "uploads\\";
+    // let newStr = arr.join("\\");
+    // console.log(newStr);
+    // console.log(str);
+    // const path = `${newStr}${filename}`;
+    // if (filename !== "def-logo.png") {
+    //     await fs.unlinkSync(path);
+    // };
 
     if (req.files.logo.mimetype === "image/jpeg" || req.files.logo.mimetype === "image/png" || req.files.logo.mimetype === "image/jpg") {
         //! upload image
