@@ -14,6 +14,16 @@ import { sendMessage, sendMessageNormal } from "telegramBot/bot";
 const Studio = DB.Studio;
 const Admin = DB.Admin;
 
+function generatePassword(length) {
+    var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#";
+    var password = "";
+    for (var i = 0; i < length; i++) {
+        var randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+    return password;
+}
+
 
 const transporter = nodemailer.createTransport({
     host: "smtp.liara.ir",
@@ -31,7 +41,7 @@ export const addStudio = async (req, res) => {
         address, province, type, license,
         pricePerHour, telegramId,
         description, passWord } = req.body;
-    let email : string = req.body.email;
+    let email: string = req.body.email;
 
     let logoFileName;
     let imageFileName;
@@ -119,8 +129,8 @@ export const addStudio = async (req, res) => {
 }
 
 export const studioSignup = async (req, res) => {
-    const { passWord }  = req.body;
-    let email : string = req.body.email;
+    const { passWord } = req.body;
+    let email: string = req.body.email;
     email = email.toLowerCase();
 
     const studio = await Studio.findOne({
@@ -170,9 +180,9 @@ export const studioSignup = async (req, res) => {
 export const updateStudio = async (req, res) => {
     const { name, phoneNumber,
         address, province, type, license,
-        pricePerHour,  telegramId,
+        pricePerHour, telegramId,
         description, passWord } = req.body;
-    let email : string = req.body.email;
+    let email: string = req.body.email;
     email = email.toLowerCase();
 
     const SALT = await bcrypt.genSalt(10);
@@ -447,7 +457,74 @@ export const getMe = async (req, res) => {
 }
 
 export const fogotPassWord = async (req, res) => {
-    const email = req.body.email;
+    let email: string = req.body.email;
+    email = email.toLowerCase();
 
-    const studio =  Studio.findOne
+    const studio = await Studio.findOne({
+        where: {
+            email
+        }
+    });
+    if (!studio) {
+        return apiResponse(res, 404, messageEnum.notFound, { "msg": "no studio exist" });
+    }
+
+
+    const token = await jwt.sign({ "updatePass": studio.studioId }, process.env.JWT_SECRET, { expiresIn: "17m" });
+
+    const link = `https://api.seartudio.com/forgotPass?token=${token}`;
+
+    await sendMessageNormal(studio.telegramId, `برای دریافت رمز عبور جدید \n ${link}`);
+    await transporter.sendMail({
+        from: 'noreply@seartudio.com',
+        to: studio.email,
+        subject: 'فراموشی رمز عبور',
+        html: `برای دریافت رمز عبور جدید \n ${link}`
+    });
+
+    return apiResponse(res, 200, messageEnum.get_success, { "msg": "link was sent to client." });
 }
+
+
+export const updatePassWord = async (req, res) => {
+    const token = req.query.token;
+
+    let decodedToken: any = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!decodedToken) {
+        return apiResponse(res, 401, messageEnum.err_unauthorized, "faild");
+    }
+
+    const studio = decodedToken.updatePass;
+
+    let newPass = generatePassword(5);
+    newPass = newPass + "@S"
+    const SALT = await bcrypt.genSalt(10);
+    const hashPassWord = await bcrypt.hash(newPass, SALT);
+
+    const studioData : any = await Studio.update({
+        passWord: hashPassWord
+    },
+        {
+            where: {
+                studioId: studio
+            },
+            returning:true
+        }).catch(err => {
+            throw err;
+    });
+
+    await sendMessageNormal(studio.telegramId, `رمز عبور جدید شما:\n ${newPass} \n رمز عبور دلخواهتان را از پنل استودیو ثبت کنید.`);
+
+    await transporter.sendMail({
+        from: 'noreply@seartudio.com',
+        to: studioData.email,
+        subject: 'فراموشی رمز عبور',
+        html: `رمز عبور جدید شما : ${newPass} \n برای تنظیم رمز عبور جدید دلخواه خود از طریق پنل استودیو اقدام کنید.`
+    });
+
+    return apiResponse(res, 201, messageEnum.created_201, { "msg": "passWord updated successfully." });
+}
+
+
+
