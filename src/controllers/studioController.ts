@@ -471,7 +471,7 @@ export const frogotPassWord = async (req, res) => {
     }
 
 
-    const token = await jwt.sign({ "updatePass": studio.studioId,"email":studio.email }, process.env.JWT_SECRET, { expiresIn: "17m" });
+    const token = await jwt.sign({ "updatePass": studio.studioId,"email":studio.email,"telId":studio.telegramId }, process.env.JWT_SECRET, { expiresIn: "17m" });
 
     const link = `https://api.seartudio.com/studio/forgotPass?token=${token}`;
 
@@ -515,7 +515,7 @@ export const updatePassWord = async (req, res) => {
             throw err;
         });
 
-    await sendMessageNormal(studio , `رمز عبور جدید شما:\n ${newPass} \n رمز عبور دلخواهتان را از پنل استودیو ثبت کنید.`);
+    await sendMessageNormal(decodedToken.telId , `رمز عبور جدید شما:\n ${newPass} \n رمز عبور دلخواهتان را از پنل استودیو ثبت کنید.`);
 
     await transporter.sendMail({
         from: 'noreply@seartudio.com',
