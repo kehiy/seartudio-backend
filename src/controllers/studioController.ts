@@ -456,7 +456,7 @@ export const getMe = async (req, res) => {
     return apiResponse(res, 200, messageEnum.get_success, result);
 }
 
-export const fogotPassWord = async (req, res) => {
+export const frogotPassWord = async (req, res) => {
     let email: string = req.body.email;
     email = email.toLowerCase();
 
@@ -472,7 +472,7 @@ export const fogotPassWord = async (req, res) => {
 
     const token = await jwt.sign({ "updatePass": studio.studioId }, process.env.JWT_SECRET, { expiresIn: "17m" });
 
-    const link = `https://api.seartudio.com/forgotPass?token=${token}`;
+    const link = `https://api.seartudio.com/studio/forgotPass?token=${token}`;
 
     await sendMessageNormal(studio.telegramId, `برای دریافت رمز عبور جدید \n ${link}`);
     await transporter.sendMail({
@@ -502,17 +502,17 @@ export const updatePassWord = async (req, res) => {
     const SALT = await bcrypt.genSalt(10);
     const hashPassWord = await bcrypt.hash(newPass, SALT);
 
-    const studioData : any = await Studio.update({
+    const studioData: any = await Studio.update({
         passWord: hashPassWord
     },
         {
             where: {
                 studioId: studio
             },
-            returning:true
+            returning: true
         }).catch(err => {
             throw err;
-    });
+        });
 
     await sendMessageNormal(studio.telegramId, `رمز عبور جدید شما:\n ${newPass} \n رمز عبور دلخواهتان را از پنل استودیو ثبت کنید.`);
 
@@ -526,6 +526,38 @@ export const updatePassWord = async (req, res) => {
     return apiResponse(res, 201, messageEnum.created_201, { "msg": "passWord updated successfully." });
 }
 
-const getLink = async (req,res) => {
-    return apiResponse(res,200,messageEnum.get_success,"https://t.me/seartudio"); 
+export const getLink = async (req, res) => {
+    return apiResponse(res, 200, messageEnum.get_success, "https://t.me/seartudio");
+}
+
+export const deleteStudio = async (req, res) => {
+    const passWord = req.body.passWord;
+    const studio = req.studio;
+
+    const studioData = await Studio.findOne({
+        where: {
+            studioId: studio.studioId
+        }
+    });
+    if (!studioData) {
+        return apiResponse(res, 404, messageEnum.notFound, { "msg": "no studio exist" });
+    }
+
+    const passwordMatch = await bcrypt.compare(passWord, studioData.passWord);
+
+    if (passwordMatch) {
+
+        await Studio.destroy({
+            where: {
+                studioId: studio.studioId
+            }
+        });
+
+        return apiResponse(res, 404, messageEnum.notFound, { "msg": "account was deleted successfully!" });
+
+    } else {
+
+        return apiResponse(res, 400, messageEnum.bad_request, { "msg": "worng password!" });
+
+    }
 }
