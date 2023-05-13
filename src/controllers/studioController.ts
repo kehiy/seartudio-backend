@@ -457,13 +457,14 @@ export const getMe = async (req, res) => {
 }
 
 export const frogotPassWord = async (req, res) => {
-    let email : string = req.body.email;
+    let { email } = req.body;
     
     const studio = await Studio.findOne({
         where: {
             email
         }
     });
+
     if (!studio) {
         return apiResponse(res, 404, messageEnum.notFound, { "msg": "no studio exist" });
     }
