@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/signup', signupValidate(), studioValidateErr, handlerAsync(studioSignup));
 router.delete('/delete', authenticated, handlerAsync(deleteStudio));
-router.get('/forgotPass', updatePassWord);
+router.get('/forgotPass', handlerAsync(updatePassWord));
 router.patch('/updateLogo', authenticated, handlerAsync(updateLogo));
 router.patch('/updateImage', authenticated, handlerAsync(updateImage));
 router.patch('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
