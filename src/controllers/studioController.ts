@@ -8,19 +8,36 @@ import bcrypt from "bcrypt";
 import { Op, Sequelize } from "sequelize";
 import { v4 } from "uuid";
 import Dto from "../dto/studioDto";
+import nodemailer from "nodemailer";
 import { sendMessage, sendMessageNormal } from "telegramBot/bot";
 
 const Studio = DB.Studio;
 const Admin = DB.Admin;
 
+
+const transporter = nodemailer.createTransport({
+    host: "smtp.liara.ir",
+    port: 587,
+    tls: true,
+    auth: {
+        user: "serene_galileo_27t5c0",
+        pass: "c51dd4b0-e968-4b3c-afb3-f2a2adbeaeda",
+    }
+});
+
+
 export const addStudio = async (req, res) => {
-    const { studioId, name, phoneNumber,
+    let { studioId, name, phoneNumber,
         address, province, type, license,
-        pricePerHour, email, telegramId,
+        pricePerHour, telegramId,
         description, passWord } = req.body;
+    let email : string = req.body.email;
 
     let logoFileName;
     let imageFileName;
+
+    email = email.toLowerCase();
+
     const isExist = await Studio.findOne({
         where: {
             [Op.or]: [
@@ -102,7 +119,9 @@ export const addStudio = async (req, res) => {
 }
 
 export const studioSignup = async (req, res) => {
-    const { email, passWord } = req.body;
+    const { passWord }  = req.body;
+    let email : string = req.body.email;
+    email = email.toLowerCase();
 
     const studio = await Studio.findOne({
         where: {
@@ -151,8 +170,13 @@ export const studioSignup = async (req, res) => {
 export const updateStudio = async (req, res) => {
     const { name, phoneNumber,
         address, province, type, license,
-        pricePerHour, email, telegramId,
-        description } = req.body;
+        pricePerHour,  telegramId,
+        description, passWord } = req.body;
+    let email : string = req.body.email;
+    email = email.toLowerCase();
+
+    const SALT = await bcrypt.genSalt(10);
+    const hashPassWord = await bcrypt.hash(passWord, SALT);
 
     const studioId = req.studio.studioId;
     await Studio.update(
@@ -166,7 +190,8 @@ export const updateStudio = async (req, res) => {
             pricePerHour,
             email,
             telegramId,
-            description
+            description,
+            passWord: hashPassWord
         },
         {
             where: {
@@ -419,4 +444,10 @@ export const getMe = async (req, res) => {
     }
 
     return apiResponse(res, 200, messageEnum.get_success, result);
+}
+
+export const fogotPassWord = async (req, res) => {
+    const email = req.body.email;
+
+    const studio =  Studio.findOne
 }

@@ -122,7 +122,9 @@ export const studioVerification = async (req, res) => {
 }
 
 export const AddAdmin = async (req, res) => {
-    const { passWord, email, reqSuacKey } = req.body;
+    const { passWord, reqSuacKey } = req.body;
+    let email : string = req.body.email;
+    email = email.toLowerCase();
 
     if (reqSuacKey !== suacKey) {
         return apiResponse(res, 401, messageEnum.err_forbidden, {});
@@ -140,7 +142,9 @@ export const AddAdmin = async (req, res) => {
 }
 
 export const removeAdmin = async (req, res) => {
-    const { email, reqSuacKey } = req.body;
+    const { reqSuacKey } = req.body;
+    let email : string = req.body.email;
+    email = email.toLowerCase();
 
     if (reqSuacKey !== suacKey) {
         return apiResponse(res, 401, messageEnum.err_forbidden, {});
