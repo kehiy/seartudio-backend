@@ -457,7 +457,7 @@ export const getMe = async (req, res) => {
 }
 
 export const frogotPassWord = async (req, res) => {
-    let email: string = req.body.email;
+    let email : string = req.body.email;
     email = email.toLowerCase();
 
     const studio = await Studio.findOne({
