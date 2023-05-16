@@ -178,39 +178,65 @@ export const studioSignup = async (req, res) => {
 }
 
 export const updateStudio = async (req, res) => {
-    const { name, phoneNumber,
+    let { name, phoneNumber,
         address, province, type, license,
         pricePerHour, telegramId,
         description, passWord } = req.body;
     let email: string = req.body.email;
     email = email.toLowerCase();
 
-    const SALT = await bcrypt.genSalt(10);
-    const hashPassWord = await bcrypt.hash(passWord, SALT);
-
     const studioId = req.studio.studioId;
-    await Studio.update(
-        {
-            name,
-            phoneNumber,
-            address,
-            province,
-            type,
-            license,
-            pricePerHour,
-            email,
-            telegramId,
-            description,
-            passWord: hashPassWord
-        },
-        {
-            where: {
-                studioId
+    if (passWord != null) {
+        const SALT = await bcrypt.genSalt(10);
+        const hashPassWord = await bcrypt.hash(passWord, SALT);
+
+        await Studio.update(
+            {
+                name,
+                phoneNumber,
+                address,
+                province,
+                type,
+                license,
+                pricePerHour,
+                email,
+                telegramId,
+                description,
+                passWord: hashPassWord
+            },
+            {
+                where: {
+                    studioId
+                }
             }
-        }
-    ).catch(err => {
-        throw err;
-    });
+        ).catch(err => {
+            throw err;
+        });
+    } else {
+        await Studio.update(
+            {
+                name,
+                phoneNumber,
+                address,
+                province,
+                type,
+                license,
+                pricePerHour,
+                email,
+                telegramId,
+                description,
+            },
+            {
+                where: {
+                    studioId
+                }
+            }
+        ).catch(err => {
+            throw err;
+        });
+    }
+
+
 
     const updatedStudio = await Studio.findOne({
         where: {
@@ -457,7 +483,7 @@ export const getMe = async (req, res) => {
 }
 
 export const frogotPassWord = async (req, res) => {
-    let email : string = req.body.email;
+    let email: string = req.body.email;
     email = email.toLowerCase();
 
     const studio = await Studio.findOne({
@@ -471,7 +497,7 @@ export const frogotPassWord = async (req, res) => {
     }
 
 
-    const token = await jwt.sign({ "updatePass": studio.studioId,"email":studio.email,"telId":studio.telegramId }, process.env.JWT_SECRET, { expiresIn: "17m" });
+    const token = await jwt.sign({ "updatePass": studio.studioId, "email": studio.email, "telId": studio.telegramId }, process.env.JWT_SECRET, { expiresIn: "17m" });
 
     const link = `https://api.seartudio.com/studio/forgotPass?token=${token}`;
 
@@ -515,7 +541,7 @@ export const updatePassWord = async (req, res) => {
             throw err;
         });
 
-    await sendMessageNormal(decodedToken.telId , `رمز عبور جدید شما:\n ${newPass} \n رمز عبور دلخواهتان را از پنل استودیو ثبت کنید.`);
+    await sendMessageNormal(decodedToken.telId, `رمز عبور جدید شما:\n ${newPass} \n رمز عبور دلخواهتان را از پنل استودیو ثبت کنید.`);
 
     await transporter.sendMail({
         from: 'noreply@seartudio.com',
