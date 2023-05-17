@@ -15,7 +15,7 @@ router.patch('/updateImage', authenticated, handlerAsync(updateImage));
 router.patch('/update', authenticated, updateValidate(), studioValidateErr, handlerAsync(updateStudio));
 router.post('/add', studioValidate(), studioValidateErr, handlerAsync(addStudio));
 router.get('/id/:studioId', handlerAsync(getStudioDetail));
-router.get('/passWordForgot', handlerAsync(frogotPassWord));
+router.post('/passWordForgot', handlerAsync(frogotPassWord));
 router.get('/getMe', handlerAsync(getMe));
 router.get('/getLink', handlerAsync(getLink));
 router.get('/', getAllStudios);
